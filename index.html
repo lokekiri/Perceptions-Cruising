@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perceptions Cruising - Diagnostic Feedback Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #1A1A1A;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: #16A085;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #566573;
+            font-size: 1.1em;
+        }
+        
+        .scenario-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .scenario-title {
+            color: #2C3E50;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #F39C12;
+        }
+        
+        .diagram-placeholder {
+            background: #ECF0F1;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            padding: 60px 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .diagram-placeholder svg {
+            max-width: 400px;
+            height: auto;
+        }
+        
+        .question {
+            font-size: 1.2em;
+            color: #2C3E50;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .answer-options {
+            margin: 20px 0;
+        }
+        
+        .answer-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-option:hover {
+            border-color: #16A085;
+            background: #E8F6F3;
+        }
+        
+        .answer-option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .answer-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1.1em;
+        }
+        
+        .submit-btn {
+            background: #16A085;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            background: #117A65;
+        }
+        
+        .submit-btn:disabled {
+            background: #BDC3C7;
+            cursor: not-allowed;
+        }
+        
+        .feedback-box {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid;
+            display: none;
+        }
+        
+        .feedback-box.correct {
+            background: #D5F4E6;
+            border-color: #16A085;
+            display: block;
+        }
+        
+        .feedback-box.incorrect {
+            background: #FADBD8;
+            border-color: #E74C3C;
+            display: block;
+        }
+        
+        .feedback-header {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-header.correct {
+            color: #16A085;
+        }
+        
+        .feedback-header.incorrect {
+            color: #E74C3C;
+        }
+        
+        .feedback-text {
+            font-size: 1.05em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .misconception-highlight {
+            background: #FFF3CD;
+            border-left: 3px solid #F39C12;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .misconception-highlight strong {
+            color: #F39C12;
+        }
+        
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-primary {
+            background: #16A085;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #16A085;
+            border: 2px solid #16A085;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .btn-primary:hover {
+            background: #117A65;
+        }
+        
+        .btn-secondary:hover {
+            background: #E8F6F3;
+        }
+        
+        .attempt-info {
+            background: #ECF0F1;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #566573;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #566573;
+        }
+        
+        .evidence-section {
+            background: #2C3E50;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+        }
+        
+        .evidence-section h2 {
+            color: #F39C12;
+            margin-bottom: 20px;
+        }
+        
+        .evidence-section pre {
+            background: #1A252F;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Perceptions Cruising</h1>
+            <p class="subtitle">Diagnostic Feedback System Demo</p>
+        </header>
+        
+        <div class="scenario-card">
+            <h2 class="scenario-title" id="scenarioTitle">Loading scenario...</h2>
+            
+            <div class="diagram-placeholder">
+                <!-- Simple SVG roundabout diagram -->
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Roundabout circle -->
+                    <circle cx="200" cy="200" r="80" fill="none" stroke="#2C3E50" stroke-width="3"/>
+                    <circle cx="200" cy="200" r="60" fill="#ECF0F1" stroke="#2C3E50" stroke-width="2"/>
+                    
+                    <!-- Roads approaching -->
+                    <rect x="185" y="280" width="30" height="100" fill="#566573"/>
+                    <rect x="20" y="185" width="100" height="30" fill="#566573"/>
+                    <rect x="280" y="185" width="100" height="30" fill="#566573"/>
+                    <rect x="185" y="20" width="30" height="100" fill="#566573"/>
+                    
+                    <!-- Lane markings -->
+                    <line x1="200" y1="280" x2="200" y2="380" stroke="white" stroke-width="2" stroke-dasharray="10,10"/>
+                    
+                    <!-- Exit arrows -->
+                    <text x="200" y="50" text-anchor="middle" fill="#2C3E50" font-size="14">Exit 4</text>
+                    <text x="350" y="205" text-anchor="middle" fill="#2C3E50" font-size="14">Exit 3</text>
+                    <text x="200" y="370" text-anchor="middle" fill="#2C3E50" font-size="14">You</text>
+                    <text x="50" y="205" text-anchor="middle" fill="#2C3E50" font-size="14">Exit 1</text>
+                    
+                    <!-- Arrow showing your car -->
+                    <polygon points="190,350 200,330 210,350" fill="#E74C3C"/>
+                    
+                    <!-- 3rd exit highlight -->
+                    <circle cx="350" cy="200" r="15" fill="none" stroke="#F39C12" stroke-width="3"/>
+                </svg>
+                <p style="color: #566573; margin-top: 10px;">4-exit roundabout (top-down view)</p>
+            </div>
+            
+            <div class="question" id="question">
+                Loading question...
+            </div>
+            
+            <form id="answerForm">
+                <div class="answer-options">
+                    <div class="answer-option">
+                        <input type="radio" name="answer" value="left_lane" id="left">
+                        <label for="left">Left lane</label>
+                    </div>
+                    <div class="answer-option">
+                        <input type="radio" name="answer" value="right_lane" id="right">
+                        <label for="right">Right lane</label>
+                    </div>
+                    <div class="answer-option">
+                        <input type="radio" name="answer" value="either_lane" id="either">
+                        <label for="either">Either lane (I can change inside the roundabout)</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                    Submit Answer
+                </button>
+            </form>
+            
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-header" id="feedbackHeader"></div>
+                <div class="feedback-text" id="feedbackText"></div>
+                <div class="misconception-highlight" id="misconceptionBox" style="display: none;">
+                    <strong>Common misconception:</strong> <span id="misconceptionText"></span>
+                </div>
+                <div class="attempt-info" id="attemptInfo"></div>
+                <div class="action-buttons" id="actionButtons" style="display: none;">
+                    <button class="btn-primary" onclick="tryAgain()">Try This Scenario Again</button>
+                    <button class="btn-secondary" onclick="showEvidence()">View Learning Evidence</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="evidence-section" id="evidenceSection" style="display: none;">
+            <h2>📊 Learning Evidence (What the Assessor Sees)</h2>
+            <p style="margin-bottom: 20px;">This is the database record proving learning happened:</p>
+            <pre id="evidenceData">Loading...</pre>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const SCENARIO_ID = 1;
+        const USER_ID = 1; // Test user
+        
+        let attemptStartTime = null;
+        
+        // Load scenario on page load
+        document.addEventListener('DOMContentLoaded', loadScenario);
+        
+        // Enable submit button when answer selected
+        document.querySelectorAll('input[name="answer"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                document.getElementById('submitBtn').disabled = false;
+            });
+        });
+        
+        // Handle form submission
+        document.getElementById('answerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked')?.value;
+            if (!selectedAnswer) return;
+            
+            attemptStartTime = new Date();
+            await submitAnswer(selectedAnswer);
+        });
+        
+        async function loadScenario() {
+            try {
+                const response = await fetch(`${API_URL}/scenarios/${SCENARIO_ID}`);
+                const scenario = await response.json();
+                
+                document.getElementById('scenarioTitle').textContent = scenario.title;
+                document.getElementById('question').textContent = scenario.question_text;
+            } catch (error) {
+                console.error('Error loading scenario:', error);
+                alert('Could not load scenario. Make sure the backend is running on port 3000.');
+            }
+        }
+        
+        async function submitAnswer(selectedAnswer) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Evaluating...';
+            
+            try {
+                const response = await fetch(`${API_URL}/scenarios/${SCENARIO_ID}/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        scenario_id: SCENARIO_ID,
+                        selected_answer: selectedAnswer,
+                        user_id: USER_ID
+                    })
+                });
+                
+                const result = await response.json();
+                displayFeedback(result);
+                
+            } catch (error) {
+                console.error('Error submitting answer:', error);
+                alert('Could not submit answer. Check console for details.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Answer';
+            }
+        }
+        
+        function displayFeedback(result) {
+            const feedbackBox = document.getElementById('feedbackBox');
+            const feedbackHeader = document.getElementById('feedbackHeader');
+            const feedbackText = document.getElementById('feedbackText');
+            const misconceptionBox = document.getElementById('misconceptionBox');
+            const misconceptionText = document.getElementById('misconceptionText');
+            const attemptInfo = document.getElementById('attemptInfo');
+            const actionButtons = document.getElementById('actionButtons');
+            
+            // Show feedback box with appropriate styling
+            feedbackBox.className = result.is_correct ? 'feedback-box correct' : 'feedback-box incorrect';
+            feedbackHeader.className = result.is_correct ? 'feedback-header correct' : 'feedback-header incorrect';
+            feedbackHeader.textContent = result.is_correct ? '✓ Correct!' : '✗ Not quite correct';
+            
+            // Show the diagnostic feedback text
+            feedbackText.textContent = result.feedback.text;
+            
+            // Show misconception if wrong answer
+            if (!result.is_correct && result.feedback.misconception) {
+                misconceptionBox.style.display = 'block';
+                misconceptionText.textContent = result.feedback.misconception;
+            } else {
+                misconceptionBox.style.display = 'none';
+            }
+            
+            // Show attempt information
+            const timeSpent = attemptStartTime ? Math.round((new Date() - attemptStartTime) / 1000) : 0;
+            attemptInfo.innerHTML = `
+                <strong>Attempt #${result.attempt_info.attempt_number}</strong><br>
+                Time spent on this question: ${timeSpent} seconds<br>
+                ${result.attempt_info.has_been_correct_before ? '✓ You have gotten this correct before' : ''}
+            `;
+            
+            // Show action buttons only if incorrect
+            actionButtons.style.display = result.is_correct ? 'none' : 'flex';
+            
+            // Hide form
+            document.getElementById('answerForm').style.display = 'none';
+        }
+        
+        function tryAgain() {
+            // Reset the form
+            document.getElementById('answerForm').style.display = 'block';
+            document.getElementById('feedbackBox').style.display = 'none';
+            document.getElementById('submitBtn').textContent = 'Submit Answer';
+            document.querySelectorAll('input[name="answer"]').forEach(radio => radio.checked = false);
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Reset timer
+            attemptStartTime = null;
+        }
+        
+        async function showEvidence() {
+            const evidenceSection = document.getElementById('evidenceSection');
+            const evidenceData = document.getElementById('evidenceData');
+            
+            evidenceSection.style.display = 'block';
+            evidenceData.textContent = 'Loading analytics...';
+            
+            try {
+                const response = await fetch(`${API_URL}/scenarios/${SCENARIO_ID}/analytics`);
+                const analytics = await response.json();
+                
+                evidenceData.textContent = JSON.stringify(analytics, null, 2);
+                
+                // Scroll to evidence
+                evidenceSection.scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                evidenceData.textContent = 'Error loading evidence: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
