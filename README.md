@@ -1,9 +1,9 @@
-# Perceptions-Cruising
-Perceptions Cruising is a web based learning system designed to help learner drivers understand real world driving situations through interactive visual scenarios and diagnostic feedback. Instead of focusing only on theory, the system tests practical decision-making by presenting realistic road scenarios and analysing the learner’s choices. The platform provides immediate explanatory feedback, highlights common misconceptions, and tracks user attempts to help identify weak areas over time. The goal of the project is to support learner confidence, reduce lesson dependency, and improve readiness for the UK practical driving test through structured, evidence-based learning interactions. In this README.MD, I will take you through the chronological steps of developing the project as well as showing the tests to my project and giving feedback and reflections if any issues come up.
+# Perceptive-Cruising
+Perceptive Cruising is a web based learning system designed to help learner drivers understand real world driving situations through interactive visual scenarios and diagnostic feedback. Instead of focusing only on theory, the system tests practical decision-making by presenting realistic road scenarios and analysing the learner’s choices. The platform provides immediate explanatory feedback, highlights common misconceptions, and tracks user attempts to help identify weak areas over time. The goal of the project is to support learner confidence, reduce lesson dependency, and improve readiness for the UK practical driving test through structured, evidence-based learning interactions. In this README.MD, I will take you through the chronological steps of developing the project as well as showing the tests to my project and giving feedback and reflections if any issues come up.
 
 ## 2-8 Feb - Adding Diagnostic Feedback System Prototype
 
-This is a working prototype of what I considered to be the **most critical** feature of Perceptions Cruising: the diagnostic feedback system that enables learning.
+This is a working prototype of what I considered to be the **most critical** feature of Perceptive Cruising: the diagnostic feedback system that enables learning.
 
 **This prototype proves:**
 - ✅ Diagnostic feedback for specific wrong answers (not generic "incorrect")
@@ -69,7 +69,7 @@ npm start
 
 You should see:
 ```
-Perceptions Cruising API running on port 3000
+Perceptive Cruising API running on port 3000
 Diagnostic feedback system ready
 ```
 
