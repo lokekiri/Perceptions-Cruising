@@ -466,21 +466,23 @@
         }
         
         function tryAgain() {
-            // Reset the form
-            document.getElementById('answerForm').style.display = 'block';
-            document.getElementById('feedbackBox').style.display = 'none';
+            const feedbackBox = document.getElementById('feedbackBox');
+            const actionButtons = document.getElementById('actionButtons');
+            const submitBtn = document.getElementById('submitBtn');
+
+            feedbackBox.className = 'feedback-box';
+            feedbackBox.style.display = 'none';
+            actionButtons.style.display = 'none';
+
             document.getElementById('submitBtn').textContent = 'Submit Answer';
-            
-            // Re-enable and clear radio buttons
+
             document.querySelectorAll('input[name="answer"]').forEach(radio => {
-                radio.checked = false;
-                radio.disabled = false;
-            });
-            
-            document.getElementById('submitBtn').disabled = true;
-            
-            // Reset timer
-            attemptStartTime = null;
+            radio.checked = false;
+            radio.disabled = false;
+        });
+
+        submitBtn.disabled = true;
+        attemptStartTime = null;
         }
         
         async function showEvidence() {
