@@ -118,37 +118,37 @@ INSERT INTO feedback (scenario_id, answer_choice, is_correct, misconception, fee
 
 INSERT INTO smtm_questions (question_type, question_text, answer_text, category) VALUES
 ('tell_me', 
- 'Tell me how you'd check the brakes are working before starting a journey.', 
+ 'Tell me how you''d check the brakes are working before starting a journey.', 
  'Brakes should not feel spongy or slack. Test them as you set off — the car should not pull to one side.', 
  'safety_checks'),
 
 ('tell_me', 
- 'Tell me where you'd find information about the recommended tyre pressures for this car.', 
- 'In the manufacturer's manual. There's usually a sticker on the door sill or inside the fuel cap.', 
+ 'Tell me where you''d find information about the recommended tyre pressures for this car.', 
+ 'In the manufacturer''s manual. There''s usually a sticker on the door sill or inside the fuel cap.', 
  'tyres'),
 
 ('tell_me', 
- 'Tell me how you'd check the tyres are safe and legal.', 
- 'Check they're free of cuts and bulges. The tread depth must be at least 1.6mm across the central three-quarters, around the whole circumference. Check pressures with a gauge.', 
+ 'Tell me how you''d check the tyres are safe and legal.', 
+ 'Check they''re free of cuts and bulges. The tread depth must be at least 1.6mm across the central three-quarters, around the whole circumference. Check pressures with a gauge.', 
  'tyres'),
 
 ('tell_me', 
- 'Tell me how you'd check the headlights and tail lights are working.', 
+ 'Tell me how you''d check the headlights and tail lights are working.', 
  'Turn on the ignition, switch on the headlights, and walk around the car to check. You could also use reflections in a window or garage door.', 
  'lights'),
 
 ('tell_me', 
- 'Tell me how you'd know if there was a problem with the anti-lock braking system (ABS).', 
- 'The ABS warning light on the dashboard should come on when you start the engine and then go off. If it stays on, there's a fault.', 
+ 'Tell me how you''d know if there was a problem with the anti-lock braking system (ABS).', 
+ 'The ABS warning light on the dashboard should come on when you start the engine and then go off. If it stays on, there''s a fault.', 
  'safety_checks'),
 
 ('tell_me', 
- 'Tell me how you'd check the direction indicators are working.', 
+ 'Tell me how you''d check the direction indicators are working.', 
  'Turn on the ignition, apply the indicators (left and right), and walk around to check. Use the hazard warning lights to check all at once.', 
  'lights'),
 
 ('tell_me', 
- 'Tell me how you'd check the brake lights are working.', 
+ 'Tell me how you''d check the brake lights are working.', 
  'Turn on the ignition, press the brake pedal, and use a reflection (window, wall, or ask someone to look).', 
  'lights');
 
@@ -158,43 +158,43 @@ INSERT INTO smtm_questions (question_type, question_text, answer_text, category)
 
 INSERT INTO smtm_questions (question_type, question_text, answer_text, image_filename, category) VALUES
 ('show_me', 
- 'Show me how you'd wash and clean the front windscreen.', 
+ 'Show me how you''d wash and clean the front windscreen.', 
  'Operate the windscreen washers and wipers.', 
  'windscreen_washer.jpg', 
  'windscreen'),
 
 ('show_me', 
- 'Show me how you'd wash and clean the rear windscreen.', 
+ 'Show me how you''d wash and clean the rear windscreen.', 
  'Operate the rear windscreen washer and wiper.', 
  'rear_washer.jpg', 
  'windscreen'),
 
 ('show_me', 
- 'Show me how you'd switch on your dipped headlights.', 
+ 'Show me how you''d switch on your dipped headlights.', 
  'Operate the headlight switch to the dipped position.', 
  'headlight_switch.jpg', 
  'lights'),
 
 ('show_me', 
- 'Show me how you'd set the rear demister.', 
+ 'Show me how you''d set the rear demister.', 
  'Press the heated rear windscreen button.', 
  'demister_button.jpg', 
  'windscreen'),
 
 ('show_me', 
- 'Show me how you'd operate the horn.', 
+ 'Show me how you''d operate the horn.', 
  'Press the horn (but only demonstrate when stationary to avoid startling other road users).', 
  'horn.jpg', 
  'controls'),
 
 ('show_me', 
- 'Show me how you'd demist the front windscreen.', 
+ 'Show me how you''d demist the front windscreen.', 
  'Set the blowers to windscreen, turn up the heat, use the air con if available.', 
  'demist_controls.jpg', 
  'windscreen'),
 
 ('show_me', 
- 'Show me how you'd open and close a side window.', 
+ 'Show me how you''d open and close a side window.', 
  'Operate the electric or manual window control.', 
  'window_control.jpg', 
  'controls');
