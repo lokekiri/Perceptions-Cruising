@@ -425,6 +425,7 @@
             
             // Show feedback box with appropriate styling
             feedbackBox.className = result.is_correct ? 'feedback-box correct' : 'feedback-box incorrect';
+            feedbackBox.style.display = 'block';
             feedbackHeader.className = result.is_correct ? 'feedback-header correct' : 'feedback-header incorrect';
             feedbackHeader.textContent = result.is_correct ? '✓ Correct!' : '✗ Not quite correct';
             
@@ -476,15 +477,15 @@
             const submitBtn = document.getElementById('submitBtn');
 
             feedbackBox.className = 'feedback-box';
-            feedbackBox.style.display = 'none';
-            actionButtons.style.display = 'none';
+            feedbackBox.style.display = '';
+            actionButtons.style.display = '';
 
-            document.getElementById('submitBtn').textContent = 'Submit Answer';
+            submitBtn.textContent = 'Submit Answer';
 
             document.querySelectorAll('input[name="answer"]').forEach(radio => {
             radio.checked = false;
             radio.disabled = false;
-        });
+         });
 
         submitBtn.disabled = true;
         attemptStartTime = null;
