@@ -289,6 +289,103 @@
             font-size: 4em;
             margin-bottom: 20px;
         }
+        
+        .user-answer-section {
+            margin: 25px 0;
+        }
+        
+        .user-answer-label {
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .user-answer-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            line-height: 1.5;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s;
+        }
+        
+        .user-answer-input:focus {
+            outline: none;
+            border-color: #16A085;
+        }
+        
+        .user-answer-display {
+            background: #F8F9FA;
+            border-left: 4px solid #3498DB;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .comparison-section {
+            display: none;
+        }
+        
+        .comparison-section.visible {
+            display: block;
+        }
+        
+        .self-assessment {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #ECF0F1;
+        }
+        
+        .self-assessment-label {
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        
+        .self-assessment-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .self-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+        
+        .self-btn-correct {
+            background: white;
+            color: #16A085;
+            border-color: #16A085;
+        }
+        
+        .self-btn-correct:hover {
+            background: #16A085;
+            color: white;
+        }
+        
+        .self-btn-practice {
+            background: white;
+            color: #E67E22;
+            border-color: #E67E22;
+        }
+        
+        .self-btn-practice:hover {
+            background: #E67E22;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -351,14 +448,44 @@
                 Loading question...
             </div>
             
-            <div class="answer-section" id="answerSection">
-                <div class="answer-label">✓ Answer:</div>
-                <div class="answer-text" id="answerText"></div>
+            <!-- User Answer Input -->
+            <div class="user-answer-section" id="userAnswerSection">
+                <div class="user-answer-label">💭 Your Answer:</div>
+                <textarea 
+                    class="user-answer-input" 
+                    id="userAnswerInput" 
+                    placeholder="Type your answer here before revealing the model answer..."></textarea>
+            </div>
+            
+            <!-- Comparison Section (shown after reveal) -->
+            <div class="comparison-section" id="comparisonSection">
+                <div class="user-answer-display">
+                    <div class="answer-label">Your Answer:</div>
+                    <div class="answer-text" id="userAnswerDisplay"></div>
+                </div>
+                
+                <div class="answer-section visible">
+                    <div class="answer-label">✓ Model Answer:</div>
+                    <div class="answer-text" id="answerText"></div>
+                </div>
+                
+                <!-- Self-Assessment -->
+                <div class="self-assessment">
+                    <div class="self-assessment-label">How did you do?</div>
+                    <div class="self-assessment-buttons">
+                        <button class="self-btn self-btn-correct" onclick="recordSelfAssessment(true)">
+                            ✓ Mostly Correct
+                        </button>
+                        <button class="self-btn self-btn-practice" onclick="recordSelfAssessment(false)">
+                            📚 Need More Practice
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <div class="action-buttons">
                 <button class="btn-primary" id="revealBtn" onclick="revealAnswer()">
-                    Show Answer
+                    Reveal Model Answer
                 </button>
                 <button class="btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display: none;">
                     Next Question →
@@ -465,9 +592,15 @@
             // Update question text
             document.getElementById('questionText').textContent = question.question_text;
             
-            // Hide answer section
-            document.getElementById('answerSection').classList.remove('visible');
+            // Store model answer
             document.getElementById('answerText').textContent = question.answer_text;
+            
+            // Reset user input
+            document.getElementById('userAnswerInput').value = '';
+            document.getElementById('userAnswerSection').style.display = 'block';
+            
+            // Hide comparison section
+            document.getElementById('comparisonSection').classList.remove('visible');
             
             // Reset buttons
             document.getElementById('revealBtn').style.display = 'block';
@@ -481,21 +614,34 @@
             const questions = allQuestions[currentType];
             const question = questions[currentIndex];
             
-            // Show answer
-            document.getElementById('answerSection').classList.add('visible');
+            // Get user's answer
+            const userAnswer = document.getElementById('userAnswerInput').value.trim();
             
-            // Update buttons
+            // Display user's answer (or note if empty)
+            document.getElementById('userAnswerDisplay').textContent = 
+                userAnswer || '(No answer provided)';
+            
+            // Hide input section, show comparison
+            document.getElementById('userAnswerSection').style.display = 'none';
+            document.getElementById('comparisonSection').classList.add('visible');
+            
+            // Hide reveal button
             document.getElementById('revealBtn').style.display = 'none';
-            document.getElementById('nextBtn').style.display = 'block';
+        }
+        
+        async function recordSelfAssessment(isCorrect) {
+            const questions = allQuestions[currentType];
+            const question = questions[currentIndex];
+            const userAnswer = document.getElementById('userAnswerInput').value.trim();
             
-            // Record attempt
+            // Record attempt with self-assessment
             try {
                 await fetch(`${API_URL}/smtm/submit`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         question_id: question.id,
-                        user_answer: 'viewed',
+                        user_answer: userAnswer || '(no answer)',
                         user_id: USER_ID
                     })
                 });
@@ -504,8 +650,11 @@
                 await loadProgress();
                 
             } catch (error) {
-                console.error('Error recording attempt:', error);
+                console.error('Error recording assessment:', error);
             }
+            
+            // Show next button
+            document.getElementById('nextBtn').style.display = 'block';
         }
         
         function nextQuestion() {
