@@ -583,6 +583,11 @@
                 });
                 
                 const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Server error');
+                }
+                
                 displayFeedback(result);
                 
             } catch (error) {
@@ -604,8 +609,12 @@
             
             // Show feedback box with appropriate styling
             feedbackBox.className = result.is_correct ? 'feedback-box correct' : 'feedback-box incorrect';
+            feedbackBox.style.display = 'block'; // CRITICAL: Override inline display:none
             feedbackHeader.className = result.is_correct ? 'feedback-header correct' : 'feedback-header incorrect';
             feedbackHeader.textContent = result.is_correct ? '✓ Correct!' : '✗ Not quite correct';
+            
+            // Reset submit button text
+            document.getElementById('submitBtn').textContent = 'Submit Answer';
             
             // Show the diagnostic feedback text (with null safety)
             feedbackText.textContent = result.feedback?.text || 'No feedback available';
@@ -653,21 +662,30 @@
         }
         
         function tryAgain() {
-            // Reset the form
+            const feedbackBox = document.getElementById('feedbackBox');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Reset feedback box cleanly
+            feedbackBox.className = 'feedback-box';
+            feedbackBox.style.display = '';
+            
+            // Reset form
             document.getElementById('answerForm').style.display = 'block';
-            document.getElementById('feedbackBox').style.display = 'none';
-            document.getElementById('submitBtn').textContent = 'Submit Answer';
             
             // Re-enable and clear radio buttons
             document.querySelectorAll('input[name="answer"]').forEach(radio => {
                 radio.checked = false;
                 radio.disabled = false;
             });
+            
+            // Re-enable answer options
             document.querySelectorAll('.answer-option').forEach(opt => {
                 opt.classList.remove('disabled');
             });
             
-            document.getElementById('submitBtn').disabled = true;
+            // Reset submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submit Answer';
             
             // Reset timer
             attemptStartTime = null;
