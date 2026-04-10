@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Me, Tell Me - Perceptive Cruising</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #1A1A1A;
+            line-height: 1.6;
+        }
+        
+        nav {
+            background: #2C3E50;
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav .brand {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        
+        nav .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            transition: opacity 0.3s;
+        }
+        
+        nav .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: #2C3E50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #566573;
+            font-size: 1.2em;
+        }
+        
+        .progress-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .progress-section {
+            margin-bottom: 15px;
+        }
+        
+        .progress-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2C3E50;
+        }
+        
+        .progress-track {
+            height: 10px;
+            background: #ECF0F1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #16A085;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+        
+        .type-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .type-btn {
+            flex: 1;
+            padding: 15px;
+            background: white;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2C3E50;
+        }
+        
+        .type-btn:hover {
+            border-color: #16A085;
+            background: #E8F6F3;
+        }
+        
+        .type-btn.active {
+            border-color: #16A085;
+            background: #16A085;
+            color: white;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #16A085;
+        }
+        
+        .question-number {
+            font-size: 1.2em;
+            color: #566573;
+            font-weight: 600;
+        }
+        
+        .question-type {
+            background: #16A085;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .question-text {
+            font-size: 1.3em;
+            color: #2C3E50;
+            margin-bottom: 25px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .answer-section {
+            background: #F8F9FA;
+            border-left: 4px solid #16A085;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .answer-section.visible {
+            display: block;
+        }
+        
+        .answer-label {
+            font-weight: 600;
+            color: #16A085;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .answer-text {
+            color: #2C3E50;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn-primary {
+            flex: 1;
+            background: #16A085;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #117A65;
+        }
+        
+        .btn-secondary {
+            flex: 1;
+            background: white;
+            color: #16A085;
+            border: 2px solid #16A085;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #E8F6F3;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: white;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover:not(:disabled) {
+            border-color: #16A085;
+            background: #E8F6F3;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #566573;
+            font-size: 1.2em;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #566573;
+        }
+        
+        .empty-state .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="brand">Perceptive Cruising</a>
+            <div class="nav-links">
+                <a href="scenarios.html">Driving Situations</a>
+                <a href="smtm.html">Show Me Tell Me</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header>
+            <h1>Show Me, Tell Me</h1>
+            <p class="subtitle">Official DVSA questions for your driving test</p>
+        </header>
+        
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Tell Me Questions</span>
+                    <span id="tellMeProgress">0/7</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="tellMeBar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Show Me Questions</span>
+                    <span id="showMeProgress">0/7</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="showMeBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Type Selector -->
+        <div class="type-selector">
+            <button class="type-btn active" data-type="tell_me" onclick="switchType('tell_me')">
+                📝 Tell Me Questions
+            </button>
+            <button class="type-btn" data-type="show_me" onclick="switchType('show_me')">
+                👁️ Show Me Questions
+            </button>
+        </div>
+        
+        <!-- Question Card -->
+        <div class="question-card" id="questionCard">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">Question 1 of 7</div>
+                <div class="question-type" id="questionType">TELL ME</div>
+            </div>
+            
+            <div class="question-text" id="questionText">
+                Loading question...
+            </div>
+            
+            <div class="answer-section" id="answerSection">
+                <div class="answer-label">✓ Answer:</div>
+                <div class="answer-text" id="answerText"></div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-primary" id="revealBtn" onclick="revealAnswer()">
+                    Show Answer
+                </button>
+                <button class="btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display: none;">
+                    Next Question →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn" onclick="previousQuestion()">
+                ← Previous
+            </button>
+            <button class="nav-btn" id="randomBtn" onclick="randomQuestion()">
+                🎲 Random Question
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const USER_ID = 1; // Test user
+        
+        let allQuestions = {
+            tell_me: [],
+            show_me: []
+        };
+        let currentType = 'tell_me';
+        let currentIndex = 0;
+        let completedQuestions = new Set();
+        
+        // Load questions on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadAllQuestions();
+            await loadProgress();
+            displayQuestion();
+        });
+        
+        async function loadAllQuestions() {
+            try {
+                // Load Tell Me questions
+                const tellMeResponse = await fetch(`${API_URL}/smtm/questions?type=tell_me`);
+                allQuestions.tell_me = await tellMeResponse.json();
+                
+                // Load Show Me questions
+                const showMeResponse = await fetch(`${API_URL}/smtm/questions?type=show_me`);
+                allQuestions.show_me = await showMeResponse.json();
+                
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                document.getElementById('questionText').textContent = 'Error loading questions. Please make sure the backend is running.';
+            }
+        }
+        
+        async function loadProgress() {
+            try {
+                const response = await fetch(`${API_URL}/smtm/progress/${USER_ID}`);
+                const progress = await response.json();
+                
+                // Update Tell Me progress
+                const tellMeCompleted = progress.tell_me.completed;
+                const tellMeTotal = progress.tell_me.total;
+                document.getElementById('tellMeProgress').textContent = `${tellMeCompleted}/${tellMeTotal}`;
+                document.getElementById('tellMeBar').style.width = `${(tellMeCompleted / tellMeTotal) * 100}%`;
+                
+                // Update Show Me progress
+                const showMeCompleted = progress.show_me.completed;
+                const showMeTotal = progress.show_me.total;
+                document.getElementById('showMeProgress').textContent = `${showMeCompleted}/${showMeTotal}`;
+                document.getElementById('showMeBar').style.width = `${(showMeCompleted / showMeTotal) * 100}%`;
+                
+            } catch (error) {
+                console.error('Error loading progress:', error);
+            }
+        }
+        
+        function switchType(type) {
+            currentType = type;
+            currentIndex = 0;
+            
+            // Update button states
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            displayQuestion();
+        }
+        
+        function displayQuestion() {
+            const questions = allQuestions[currentType];
+            if (!questions || questions.length === 0) {
+                document.getElementById('questionText').textContent = 'No questions available';
+                return;
+            }
+            
+            const question = questions[currentIndex];
+            
+            // Update question number and type
+            document.getElementById('questionNumber').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+            document.getElementById('questionType').textContent = currentType === 'tell_me' ? 'TELL ME' : 'SHOW ME';
+            
+            // Update question text
+            document.getElementById('questionText').textContent = question.question_text;
+            
+            // Hide answer section
+            document.getElementById('answerSection').classList.remove('visible');
+            document.getElementById('answerText').textContent = question.answer_text;
+            
+            // Reset buttons
+            document.getElementById('revealBtn').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'none';
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+        }
+        
+        async function revealAnswer() {
+            const questions = allQuestions[currentType];
+            const question = questions[currentIndex];
+            
+            // Show answer
+            document.getElementById('answerSection').classList.add('visible');
+            
+            // Update buttons
+            document.getElementById('revealBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'block';
+            
+            // Record attempt
+            try {
+                await fetch(`${API_URL}/smtm/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        question_id: question.id,
+                        user_answer: 'viewed',
+                        user_id: USER_ID
+                    })
+                });
+                
+                // Reload progress
+                await loadProgress();
+                
+            } catch (error) {
+                console.error('Error recording attempt:', error);
+            }
+        }
+        
+        function nextQuestion() {
+            const questions = allQuestions[currentType];
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                displayQuestion();
+            } else {
+                // Loop back to first question
+                currentIndex = 0;
+                displayQuestion();
+            }
+        }
+        
+        function previousQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayQuestion();
+            }
+        }
+        
+        function randomQuestion() {
+            const questions = allQuestions[currentType];
+            currentIndex = Math.floor(Math.random() * questions.length);
+            displayQuestion();
+        }
+    </script>
+</body>
+</html>

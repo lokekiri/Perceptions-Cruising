@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving Situations - Perceptive Cruising</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #1A1A1A;
+            line-height: 1.6;
+        }
+        
+        nav {
+            background: #2C3E50;
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav .brand {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        
+        nav .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            transition: opacity 0.3s;
+        }
+        
+        nav .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: #2C3E50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #566573;
+            font-size: 1.2em;
+        }
+        
+        .scenario-selector {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .scenario-selector h2 {
+            color: #2C3E50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        
+        .scenario-option {
+            background: #ECF0F1;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .scenario-option:hover {
+            border-color: #3498DB;
+            background: #E8F6F3;
+            transform: translateY(-2px);
+        }
+        
+        .scenario-option.active {
+            border-color: #3498DB;
+            background: #D6EAF8;
+        }
+        
+        .scenario-option .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .scenario-option .title {
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-option .description {
+            font-size: 0.9em;
+            color: #566573;
+        }
+        
+        .scenario-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .scenario-card.active {
+            display: block;
+        }
+        
+        .scenario-title {
+            color: #2C3E50;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498DB;
+        }
+        
+        .diagram-placeholder {
+            background: #ECF0F1;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .diagram-placeholder svg {
+            max-width: 400px;
+            height: auto;
+        }
+        
+        .question {
+            font-size: 1.2em;
+            color: #2C3E50;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .answer-options {
+            margin: 20px 0;
+        }
+        
+        .answer-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-option:hover:not(.disabled) {
+            border-color: #3498DB;
+            background: #EBF5FB;
+        }
+        
+        .answer-option.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .answer-option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .answer-option input[type="radio"]:disabled {
+            cursor: not-allowed;
+        }
+        
+        .answer-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1.1em;
+        }
+        
+        .answer-option.disabled label {
+            cursor: not-allowed;
+        }
+        
+        .submit-btn {
+            background: #3498DB;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            background: #2980B9;
+        }
+        
+        .submit-btn:disabled {
+            background: #BDC3C7;
+            cursor: not-allowed;
+        }
+        
+        .feedback-box {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid;
+            display: none;
+        }
+        
+        .feedback-box.correct {
+            background: #D5F4E6;
+            border-color: #16A085;
+            display: block;
+        }
+        
+        .feedback-box.incorrect {
+            background: #FADBD8;
+            border-color: #E74C3C;
+            display: block;
+        }
+        
+        .feedback-header {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-header.correct {
+            color: #16A085;
+        }
+        
+        .feedback-header.incorrect {
+            color: #E74C3C;
+        }
+        
+        .feedback-text {
+            font-size: 1.05em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .misconception-highlight {
+            background: #FFF3CD;
+            border-left: 3px solid #F39C12;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .misconception-highlight strong {
+            color: #F39C12;
+        }
+        
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: #3498DB;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #3498DB;
+            border: 2px solid #3498DB;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .btn-primary:hover {
+            background: #2980B9;
+        }
+        
+        .btn-secondary:hover {
+            background: #EBF5FB;
+        }
+        
+        .attempt-info {
+            background: #ECF0F1;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #566573;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #566573;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="brand">Perceptive Cruising</a>
+            <div class="nav-links">
+                <a href="scenarios.html">Driving Situations</a>
+                <a href="smtm.html">Show Me Tell Me</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header>
+            <h1>Driving Situations</h1>
+            <p class="subtitle">Learn through visual scenarios with diagnostic feedback</p>
+        </header>
+        
+        <!-- Scenario Selector -->
+        <div class="scenario-selector">
+            <h2>Choose a Scenario Type</h2>
+            <div class="scenario-grid">
+                <div class="scenario-option active" data-scenario="1">
+                    <div class="icon">🔄</div>
+                    <div class="title">Roundabout</div>
+                    <div class="description">Lane positioning for exits</div>
+                </div>
+                <div class="scenario-option" data-scenario="2">
+                    <div class="icon">🚦</div>
+                    <div class="title">Junction</div>
+                    <div class="description">Emerging safely</div>
+                </div>
+                <div class="scenario-option" data-scenario="3">
+                    <div class="icon">↔️</div>
+                    <div class="title">Narrow Road</div>
+                    <div class="description">Meeting traffic</div>
+                </div>
+                <div class="scenario-option" data-scenario="4">
+                    <div class="icon">🚶</div>
+                    <div class="title">Pedestrian</div>
+                    <div class="description">Crossing awareness</div>
+                </div>
+                <div class="scenario-option" data-scenario="5">
+                    <div class="icon">🚗</div>
+                    <div class="title">Obstruction</div>
+                    <div class="description">Parked vehicles</div>
+                </div>
+                <div class="scenario-option" data-scenario="6">
+                    <div class="icon">🪞</div>
+                    <div class="title">Mirrors</div>
+                    <div class="description">Check timing</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scenario Card (dynamically loaded) -->
+        <div class="scenario-card active" id="scenarioCard">
+            <h2 class="scenario-title" id="scenarioTitle">Loading scenario...</h2>
+            
+            <div class="diagram-placeholder" id="diagramContainer">
+                <!-- Diagram will be loaded here -->
+                <p class="loading">Loading diagram...</p>
+            </div>
+            
+            <div class="question" id="question">
+                Loading question...
+            </div>
+            
+            <form id="answerForm">
+                <div class="answer-options" id="answerOptions">
+                    <!-- Answer options will be loaded here -->
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                    Submit Answer
+                </button>
+            </form>
+            
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-header" id="feedbackHeader"></div>
+                <div class="feedback-text" id="feedbackText"></div>
+                <div class="misconception-highlight" id="misconceptionBox" style="display: none;">
+                    <strong>Common misconception:</strong> <span id="misconceptionText"></span>
+                </div>
+                <div class="attempt-info" id="attemptInfo"></div>
+                <div class="action-buttons" id="actionButtons" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const USER_ID = 1; // Test user
+        
+        let currentScenarioId = 1;
+        let attemptStartTime = null;
+        
+        // Load first scenario on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadScenario(1);
+        });
+        
+        // Handle scenario type selection
+        document.querySelectorAll('.scenario-option').forEach(option => {
+            option.addEventListener('click', () => {
+                // Update active state
+                document.querySelectorAll('.scenario-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                
+                // Load selected scenario
+                const scenarioId = option.dataset.scenario;
+                loadScenario(scenarioId);
+            });
+        });
+        
+        // Handle form submission
+        document.getElementById('answerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked')?.value;
+            if (!selectedAnswer) return;
+            
+            attemptStartTime = new Date();
+            await submitAnswer(selectedAnswer);
+        });
+        
+        async function loadScenario(scenarioId) {
+            currentScenarioId = scenarioId;
+            
+            // Reset UI
+            document.getElementById('feedbackBox').style.display = 'none';
+            document.getElementById('answerForm').style.display = 'block';
+            
+            try {
+                const response = await fetch(`${API_URL}/scenarios/${scenarioId}`);
+                const scenario = await response.json();
+                
+                // Update title and question
+                document.getElementById('scenarioTitle').textContent = scenario.title;
+                document.getElementById('question').textContent = scenario.question_text;
+                
+                // Load diagram
+                loadDiagram(scenarioId);
+                
+                // Load answer options (dynamically based on scenario)
+                loadAnswerOptions(scenarioId);
+                
+            } catch (error) {
+                console.error('Error loading scenario:', error);
+                document.getElementById('scenarioTitle').textContent = 'Error loading scenario';
+                document.getElementById('question').textContent = 'Please make sure the backend is running on port 3000.';
+            }
+        }
+        
+        function loadDiagram(scenarioId) {
+            const container = document.getElementById('diagramContainer');
+            
+            // Different diagrams for different scenarios
+            const diagrams = {
+                1: getRoundaboutDiagram(),
+                2: getJunctionDiagram(),
+                3: getNarrowRoadDiagram(),
+                4: getPedestrianDiagram(),
+                5: getObstructionDiagram(),
+                6: getMirrorDiagram()
+            };
+            
+            container.innerHTML = diagrams[scenarioId] || '<p>Diagram not available</p>';
+        }
+        
+        function loadAnswerOptions(scenarioId) {
+            const container = document.getElementById('answerOptions');
+            
+            // Different options for different scenarios
+            const options = {
+                1: [
+                    { value: 'left_lane', label: 'Left lane' },
+                    { value: 'right_lane', label: 'Right lane' },
+                    { value: 'either_lane', label: 'Either lane (I can change inside the roundabout)' }
+                ],
+                2: [
+                    { value: 'emerge_slowly', label: 'Emerge slowly, looking both ways' },
+                    { value: 'wait_clear', label: 'Wait until completely clear' },
+                    { value: 'edge_forward', label: 'Edge forward to improve view' }
+                ],
+                3: [
+                    { value: 'stop_wait', label: 'Stop and wait for oncoming traffic' },
+                    { value: 'proceed_carefully', label: 'Proceed carefully if clear' },
+                    { value: 'sound_horn', label: 'Sound horn and continue' }
+                ],
+                4: [
+                    { value: 'slow_ready', label: 'Slow down and be ready to stop' },
+                    { value: 'maintain_speed', label: 'Maintain speed if no pedestrians visible' },
+                    { value: 'stop_always', label: 'Always stop at crossing' }
+                ],
+                5: [
+                    { value: 'wait_clear', label: 'Wait for road to clear completely' },
+                    { value: 'check_proceed', label: 'Check mirrors, signal, proceed when safe' },
+                    { value: 'proceed_quickly', label: 'Proceed quickly to minimize obstruction' }
+                ],
+                6: [
+                    { value: 'before_signal', label: 'Check mirrors before signalling' },
+                    { value: 'after_signal', label: 'Check mirrors after signalling' },
+                    { value: 'while_turning', label: 'Check mirrors while turning' }
+                ]
+            };
+            
+            const scenarioOptions = options[scenarioId] || options[1];
+            
+            container.innerHTML = scenarioOptions.map((opt, index) => `
+                <div class="answer-option">
+                    <input type="radio" name="answer" value="${opt.value}" id="answer${index}">
+                    <label for="answer${index}">${opt.label}</label>
+                </div>
+            `).join('');
+            
+            // Re-attach event listeners
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                radio.addEventListener('change', () => {
+                    document.getElementById('submitBtn').disabled = false;
+                });
+            });
+            
+            document.getElementById('submitBtn').disabled = true;
+        }
+        
+        async function submitAnswer(selectedAnswer) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Evaluating...';
+            
+            try {
+                const response = await fetch(`${API_URL}/scenarios/${currentScenarioId}/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        scenario_id: currentScenarioId,
+                        selected_answer: selectedAnswer,
+                        user_id: USER_ID
+                    })
+                });
+                
+                const result = await response.json();
+                displayFeedback(result);
+                
+            } catch (error) {
+                console.error('Error submitting answer:', error);
+                alert('Could not submit answer. Check console for details.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Answer';
+            }
+        }
+        
+        function displayFeedback(result) {
+            const feedbackBox = document.getElementById('feedbackBox');
+            const feedbackHeader = document.getElementById('feedbackHeader');
+            const feedbackText = document.getElementById('feedbackText');
+            const misconceptionBox = document.getElementById('misconceptionBox');
+            const misconceptionText = document.getElementById('misconceptionText');
+            const attemptInfo = document.getElementById('attemptInfo');
+            const actionButtons = document.getElementById('actionButtons');
+            
+            // Show feedback box with appropriate styling
+            feedbackBox.className = result.is_correct ? 'feedback-box correct' : 'feedback-box incorrect';
+            feedbackHeader.className = result.is_correct ? 'feedback-header correct' : 'feedback-header incorrect';
+            feedbackHeader.textContent = result.is_correct ? '✓ Correct!' : '✗ Not quite correct';
+            
+            // Show the diagnostic feedback text (with null safety)
+            feedbackText.textContent = result.feedback?.text || 'No feedback available';
+            
+            // Show misconception if wrong answer
+            if (!result.is_correct && result.feedback?.misconception) {
+                misconceptionBox.style.display = 'block';
+                misconceptionText.textContent = result.feedback.misconception;
+            } else {
+                misconceptionBox.style.display = 'none';
+            }
+            
+            // Show attempt information
+            const timeSpent = attemptStartTime ? Math.round((new Date() - attemptStartTime) / 1000) : 0;
+            attemptInfo.innerHTML = `
+                <strong>Attempt #${result.attempt_info?.attempt_number || 1}</strong><br>
+                Time spent on this question: ${timeSpent} seconds<br>
+                ${result.attempt_info?.has_been_correct_before ? '✓ You have gotten this correct before' : ''}
+            `;
+            
+            // ALWAYS show action buttons
+            actionButtons.style.display = 'flex';
+            
+            // Different buttons for correct vs incorrect answers
+            if (result.is_correct) {
+                actionButtons.innerHTML = `
+                    <button class="btn-primary" onclick="tryAgain()">Try Again</button>
+                    <button class="btn-secondary" onclick="nextScenario()">Next Scenario</button>
+                `;
+            } else {
+                actionButtons.innerHTML = `
+                    <button class="btn-primary" onclick="tryAgain()">Try This Scenario Again</button>
+                    <button class="btn-secondary" onclick="nextScenario()">Next Scenario</button>
+                `;
+            }
+            
+            // Disable inputs instead of hiding form
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                radio.disabled = true;
+            });
+            document.querySelectorAll('.answer-option').forEach(opt => {
+                opt.classList.add('disabled');
+            });
+            document.getElementById('submitBtn').disabled = true;
+        }
+        
+        function tryAgain() {
+            // Reset the form
+            document.getElementById('answerForm').style.display = 'block';
+            document.getElementById('feedbackBox').style.display = 'none';
+            document.getElementById('submitBtn').textContent = 'Submit Answer';
+            
+            // Re-enable and clear radio buttons
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                radio.checked = false;
+                radio.disabled = false;
+            });
+            document.querySelectorAll('.answer-option').forEach(opt => {
+                opt.classList.remove('disabled');
+            });
+            
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Reset timer
+            attemptStartTime = null;
+        }
+        
+        function nextScenario() {
+            // Go to next scenario (loop back to 1 after 6)
+            const nextId = currentScenarioId < 6 ? currentScenarioId + 1 : 1;
+            
+            // Update UI
+            document.querySelectorAll('.scenario-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.dataset.scenario == nextId) {
+                    opt.classList.add('active');
+                }
+            });
+            
+            // Load next scenario
+            loadScenario(nextId);
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Diagram SVGs (simplified versions)
+        function getRoundaboutDiagram() {
+            return `
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="200" r="80" fill="none" stroke="#2C3E50" stroke-width="3"/>
+                    <circle cx="200" cy="200" r="60" fill="#ECF0F1" stroke="#2C3E50" stroke-width="2"/>
+                    <rect x="185" y="280" width="30" height="100" fill="#566573"/>
+                    <rect x="20" y="185" width="100" height="30" fill="#566573"/>
+                    <rect x="280" y="185" width="100" height="30" fill="#566573"/>
+                    <rect x="185" y="20" width="30" height="100" fill="#566573"/>
+                    <line x1="200" y1="280" x2="200" y2="380" stroke="white" stroke-width="2" stroke-dasharray="10,10"/>
+                    <text x="200" y="50" text-anchor="middle" fill="#2C3E50" font-size="14">Exit 4</text>
+                    <text x="350" y="205" text-anchor="middle" fill="#2C3E50" font-size="14">Exit 3</text>
+                    <text x="200" y="370" text-anchor="middle" fill="#2C3E50" font-size="14">You</text>
+                    <text x="50" y="205" text-anchor="middle" fill="#2C3E50" font-size="14">Exit 1</text>
+                    <polygon points="190,350 200,330 210,350" fill="#E74C3C"/>
+                    <circle cx="350" cy="200" r="15" fill="none" stroke="#F39C12" stroke-width="3"/>
+                </svg>
+                <p style="color: #566573; margin-top: 10px;">4-exit roundabout (top-down view)</p>
+            `;
+        }
+        
+        function getJunctionDiagram() {
+            return `
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="120" width="200" height="60" fill="#566573"/>
+                    <rect x="200" y="0" width="60" height="300" fill="#566573"/>
+                    <line x1="100" y1="150" x2="200" y2="150" stroke="white" stroke-width="2" stroke-dasharray="10,10"/>
+                    <polygon points="180,130 200,150 180,170" fill="#E74C3C"/>
+                    <text x="100" y="110" text-anchor="middle" fill="#2C3E50" font-size="14">Your position</text>
+                    <text x="230" y="50" text-anchor="start" fill="#2C3E50" font-size="14">Main road</text>
+                </svg>
+                <p style="color: #566573; margin-top: 10px;">T-junction (view from side road)</p>
+            `;
+        }
+        
+        function getNarrowRoadDiagram() {
+            return `
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="150" y="0" width="100" height="300" fill="#566573"/>
+                    <rect x="50" y="50" width="80" height="40" fill="#95A5A6"/>
+                    <rect x="270" y="210" width="80" height="40" fill="#95A5A6"/>
+                    <polygon points="190,250 200,230 210,250" fill="#E74C3C"/>
+                    <polygon points="190,50 200,70 210,50" fill="#34495E"/>
+                    <text x="200" y="290" text-anchor="middle" fill="#2C3E50" font-size="14">You</text>
+                    <text x="200" y="30" text-anchor="middle" fill="#2C3E50" font-size="14">Oncoming</text>
+                </svg>
+                <p style="color: #566573; margin-top: 10px;">Narrow road with parked cars</p>
+            `;
+        }
+        
+        function getPedestrianDiagram() {
+            return `
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="120" width="400" height="60" fill="#566573"/>
+                    <rect x="180" y="100" width="40" height="100" fill="#F39C12" opacity="0.3"/>
+                    <circle cx="200" cy="150" r="8" fill="#E74C3C"/>
+                    <line x1="200" y1="158" x2="200" y2="175" stroke="#E74C3C" stroke-width="3"/>
+                    <line x1="200" y1="165" x2="190" y2="175" stroke="#E74C3C" stroke-width="3"/>
+                    <line x1="200" y1="165" x2="210" y2="175" stroke="#E74C3C" stroke-width="3"/>
+                    <polygon points="80,140 100,150 80,160" fill="#34495E"/>
+                    <text x="200" y="210" text-anchor="middle" fill="#2C3E50" font-size="14">Pedestrian crossing</text>
+                </svg>
+                <p style="color: #566573; margin-top: 10px;">Zebra crossing ahead</p>
+            `;
+        }
+        
+        function getObstructionDiagram() {
+            return `
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="100" width="400" height="100" fill="#566573"/>
+                    <line x1="200" y1="100" x2="200" y2="200" stroke="white" stroke-width="2" stroke-dasharray="10,10"/>
+                    <rect x="220" y="120" width="70" height="35" fill="#95A5A6"/>
+                    <circle cx="240" cy="155" r="8" fill="#2C3E50"/>
+                    <circle cx="270" cy="155" r="8" fill="#2C3E50"/>
+                    <polygon points="80,140 100,150 80,160" fill="#E74C3C"/>
+                    <text x="100" y="125" text-anchor="middle" fill="#2C3E50" font-size="14">You</text>
+                    <text x="255" y="110" text-anchor="middle" fill="#2C3E50" font-size="14">Parked car</text>
+                </svg>
+                <p style="color: #566573; margin-top: 10px;">Parked car on your side</p>
+            `;
+        }
+        
+        function getMirrorDiagram() {
+            return `
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="150" y="80" width="100" height="140" fill="#566573"/>
+                    <rect x="180" y="100" width="40" height="20" fill="#3498DB" opacity="0.5"/>
+                    <text x="200" y="95" text-anchor="middle" fill="#2C3E50" font-size="12">Interior mirror</text>
+                    <rect x="120" y="130" width="25" height="15" fill="#3498DB" opacity="0.5"/>
+                    <text x="80" y="140" text-anchor="middle" fill="#2C3E50" font-size="12">Left mirror</text>
+                    <rect x="255" y="130" width="25" height="15" fill="#3498DB" opacity="0.5"/>
+                    <text x="320" y="140" text-anchor="middle" fill="#2C3E50" font-size="12">Right mirror</text>
+                    <polygon points="190,200 200,180 210,200" fill="#E74C3C"/>
+                    <text x="200" y="240" text-anchor="middle" fill="#2C3E50" font-size="14">Your car (overhead view)</text>
+                </svg>
+                <p style="color: #566573; margin-top: 10px;">Mirror check sequence</p>
+            `;
+        }
+    </script>
+</body>
+</html>

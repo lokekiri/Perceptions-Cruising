@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perceptive Cruising - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .tagline {
+            font-size: 1.4em;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .module-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .module-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .module-title {
+            font-size: 2em;
+            color: #2C3E50;
+            margin-bottom: 15px;
+        }
+        
+        .module-description {
+            color: #566573;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .module-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .module-features li {
+            padding: 8px 0;
+            color: #566573;
+            display: flex;
+            align-items: center;
+        }
+        
+        .module-features li:before {
+            content: "✓";
+            color: #16A085;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .module-cta {
+            background: #16A085;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: background 0.3s ease;
+        }
+        
+        .module-card:hover .module-cta {
+            background: #117A65;
+        }
+        
+        .module-card.scenarios .module-cta {
+            background: #3498DB;
+        }
+        
+        .module-card.scenarios:hover .module-cta {
+            background: #2980B9;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.9;
+        }
+        
+        footer p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .tagline {
+                font-size: 1.1em;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .module-card {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Perceptive Cruising</h1>
+            <p class="tagline">Practice the situations before you face them</p>
+        </header>
+        
+        <div class="modules-grid">
+            <!-- Driving Situations Module -->
+            <a href="scenarios.html" class="module-card scenarios">
+                <div class="module-icon">🚗</div>
+                <h2 class="module-title">Driving Situations</h2>
+                <p class="module-description">
+                    Learn through visual scenarios with diagnostic feedback that explains your mistakes and helps you understand the correct reasoning.
+                </p>
+                <ul class="module-features">
+                    <li>Roundabout lane positioning</li>
+                    <li>Junction decisions</li>
+                    <li>Narrow road procedures</li>
+                    <li>Pedestrian awareness</li>
+                    <li>Traffic light judgement</li>
+                    <li>Mirror check timing</li>
+                </ul>
+                <div class="module-cta">Start Learning Scenarios →</div>
+            </a>
+            
+            <!-- Show Me Tell Me Module -->
+            <a href="smtm.html" class="module-card smtm">
+                <div class="module-icon">📝</div>
+                <h2 class="module-title">Show Me, Tell Me</h2>
+                <p class="module-description">
+                    Practice the official DVSA "Show Me, Tell Me" questions that you'll be asked at the start of your driving test.
+                </p>
+                <ul class="module-features">
+                    <li>7 Tell Me questions</li>
+                    <li>7 Show Me questions</li>
+                    <li>Official DVSA content</li>
+                    <li>Interactive practice</li>
+                    <li>Immediate answers</li>
+                    <li>Track your progress</li>
+                </ul>
+                <div class="module-cta">Practice SMTM Questions →</div>
+            </a>
+        </div>
+        
+        <footer>
+            <p><strong>Perceptive Cruising</strong></p>
+            <p>Built for learner drivers preparing for practical lessons and the UK driving test</p>
+        </footer>
+    </div>
+</body>
+</html>
