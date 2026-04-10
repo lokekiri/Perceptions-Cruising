@@ -477,6 +477,10 @@
                 const response = await fetch(`${API_URL}/scenarios/${scenarioId}`);
                 const scenario = await response.json();
                 
+                if (!response.ok) {
+                    throw new Error(scenario.error || 'Scenario load failed');
+                }
+                
                 // Update title and question
                 document.getElementById('scenarioTitle').textContent = scenario.title;
                 document.getElementById('question').textContent = scenario.question_text;
@@ -489,8 +493,8 @@
                 
             } catch (error) {
                 console.error('Error loading scenario:', error);
-                document.getElementById('scenarioTitle').textContent = 'Error loading scenario';
-                document.getElementById('question').textContent = 'Please make sure the backend is running on port 3000.';
+                document.getElementById('scenarioTitle').textContent = 'Scenario unavailable';
+                document.getElementById('question').textContent = 'This scenario has not been added to the database yet. Please check that the backend is running and the database is properly seeded.';
             }
         }
         
