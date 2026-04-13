@@ -73,6 +73,53 @@
             font-size: 1.2em;
         }
         
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 20px;
+            background: white;
+            border: 3px solid #BDC3C7;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .mode-btn:hover {
+            border-color: #16A085;
+            background: #E8F6F3;
+        }
+        
+        .mode-btn.active {
+            border-color: #16A085;
+            background: #16A085;
+            color: white;
+        }
+        
+        .mode-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .mode-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .mode-description {
+            font-size: 0.95em;
+            opacity: 0.8;
+        }
+        
         .progress-bar {
             background: white;
             border-radius: 12px;
@@ -181,35 +228,128 @@
             line-height: 1.5;
         }
         
-        .answer-section {
-            background: #F8F9FA;
-            border-left: 4px solid #16A085;
+        .answer-options {
+            margin: 25px 0;
+        }
+        
+        .answer-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            margin: 12px 0;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .answer-option:hover:not(.disabled) {
+            border-color: #16A085;
+            background: #E8F6F3;
+        }
+        
+        .answer-option.disabled {
+            cursor: not-allowed;
+        }
+        
+        .answer-option.correct {
+            border-color: #16A085;
+            background: #D5F4E6;
+            border-width: 3px;
+        }
+        
+        .answer-option.incorrect {
+            border-color: #E74C3C;
+            background: #FADBD8;
+            border-width: 3px;
+        }
+        
+        .answer-option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .answer-option input[type="radio"]:disabled {
+            cursor: not-allowed;
+        }
+        
+        .answer-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1.05em;
+            line-height: 1.5;
+        }
+        
+        .answer-option.disabled label {
+            cursor: not-allowed;
+        }
+        
+        .submit-btn {
+            background: #16A085;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            background: #117A65;
+        }
+        
+        .submit-btn:disabled {
+            background: #BDC3C7;
+            cursor: not-allowed;
+        }
+        
+        .feedback-box {
+            margin-top: 25px;
             padding: 20px;
             border-radius: 8px;
+            border-left: 5px solid;
             display: none;
         }
         
-        .answer-section.visible {
+        .feedback-box.correct {
+            background: #D5F4E6;
+            border-color: #16A085;
             display: block;
         }
         
-        .answer-label {
-            font-weight: 600;
-            color: #16A085;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+        .feedback-box.incorrect {
+            background: #FADBD8;
+            border-color: #E74C3C;
+            display: block;
         }
         
-        .answer-text {
-            color: #2C3E50;
-            font-size: 1.1em;
-            line-height: 1.7;
+        .feedback-header {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .feedback-header.correct {
+            color: #16A085;
+        }
+        
+        .feedback-header.incorrect {
+            color: #E74C3C;
+        }
+        
+        .feedback-text {
+            line-height: 1.6;
         }
         
         .action-buttons {
+            margin-top: 20px;
             display: flex;
             gap: 15px;
-            margin-top: 25px;
         }
         
         .btn-primary {
@@ -217,33 +357,15 @@
             background: #16A085;
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
+            padding: 12px 25px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 600;
+            font-size: 1em;
             transition: background 0.3s ease;
         }
         
         .btn-primary:hover {
             background: #117A65;
-        }
-        
-        .btn-secondary {
-            flex: 1;
-            background: white;
-            color: #16A085;
-            border: 2px solid #16A085;
-            padding: 15px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: #E8F6F3;
         }
         
         .nav-buttons {
@@ -279,112 +401,13 @@
             font-size: 1.2em;
         }
         
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #566573;
-        }
-        
-        .empty-state .icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-        
-        .user-answer-section {
-            margin: 25px 0;
-        }
-        
-        .user-answer-label {
-            font-weight: 600;
-            color: #2C3E50;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-        
-        .user-answer-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #BDC3C7;
+        .error-message {
+            background: #FADBD8;
+            border: 2px solid #E74C3C;
             border-radius: 8px;
-            font-size: 1em;
-            font-family: inherit;
-            line-height: 1.5;
-            resize: vertical;
-            min-height: 100px;
-            transition: border-color 0.3s;
-        }
-        
-        .user-answer-input:focus {
-            outline: none;
-            border-color: #16A085;
-        }
-        
-        .user-answer-display {
-            background: #F8F9FA;
-            border-left: 4px solid #3498DB;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .comparison-section {
-            display: none;
-        }
-        
-        .comparison-section.visible {
-            display: block;
-        }
-        
-        .self-assessment {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 2px solid #ECF0F1;
-        }
-        
-        .self-assessment-label {
-            font-weight: 600;
-            color: #2C3E50;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-            text-align: center;
-        }
-        
-        .self-assessment-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .self-btn {
-            flex: 1;
-            padding: 15px 20px;
-            border: 2px solid;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 1em;
-        }
-        
-        .self-btn-correct {
-            background: white;
-            color: #16A085;
-            border-color: #16A085;
-        }
-        
-        .self-btn-correct:hover {
-            background: #16A085;
-            color: white;
-        }
-        
-        .self-btn-practice {
-            background: white;
-            color: #E67E22;
-            border-color: #E67E22;
-        }
-        
-        .self-btn-practice:hover {
-            background: #E67E22;
-            color: white;
+            padding: 20px;
+            margin: 20px 0;
+            color: #C0392B;
         }
     </style>
 </head>
@@ -405,12 +428,26 @@
             <p class="subtitle">Official DVSA questions for your driving test</p>
         </header>
         
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <a href="smtm.html" class="mode-btn active">
+                <div class="mode-icon">📚</div>
+                <div class="mode-title">Practice Mode</div>
+                <div class="mode-description">Learn all 21 questions with multiple choice</div>
+            </a>
+            <a href="smtm-test.html" class="mode-btn">
+                <div class="mode-icon">✅</div>
+                <div class="mode-title">Test Mode</div>
+                <div class="mode-description">Simulate real test: 1 Tell Me + 1 Show Me</div>
+            </a>
+        </div>
+        
         <!-- Progress Bar -->
         <div class="progress-bar">
             <div class="progress-section">
                 <div class="progress-label">
-                    <span>Tell Me Questions</span>
-                    <span id="tellMeProgress">0/7</span>
+                    <span>Tell Me Questions (14)</span>
+                    <span id="tellMeProgress">0/14</span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" id="tellMeBar" style="width: 0%"></div>
@@ -418,7 +455,7 @@
             </div>
             <div class="progress-section">
                 <div class="progress-label">
-                    <span>Show Me Questions</span>
+                    <span>Show Me Questions (7)</span>
                     <span id="showMeProgress">0/7</span>
                 </div>
                 <div class="progress-track">
@@ -430,76 +467,28 @@
         <!-- Type Selector -->
         <div class="type-selector">
             <button class="type-btn active" data-type="tell_me" onclick="switchType('tell_me')">
-                📝 Tell Me Questions
+                📝 Tell Me Questions (14)
             </button>
             <button class="type-btn" data-type="show_me" onclick="switchType('show_me')">
-                👁️ Show Me Questions
+                👁️ Show Me Questions (7)
             </button>
         </div>
         
         <!-- Question Card -->
         <div class="question-card" id="questionCard">
-            <div class="question-header">
-                <div class="question-number" id="questionNumber">Question 1 of 7</div>
-                <div class="question-type" id="questionType">TELL ME</div>
-            </div>
-            
-            <div class="question-text" id="questionText">
-                Loading question...
-            </div>
-            
-            <!-- User Answer Input -->
-            <div class="user-answer-section" id="userAnswerSection">
-                <div class="user-answer-label">💭 Your Answer:</div>
-                <textarea 
-                    class="user-answer-input" 
-                    id="userAnswerInput" 
-                    placeholder="Type your answer here before revealing the model answer..."></textarea>
-            </div>
-            
-            <!-- Comparison Section (shown after reveal) -->
-            <div class="comparison-section" id="comparisonSection">
-                <div class="user-answer-display">
-                    <div class="answer-label">Your Answer:</div>
-                    <div class="answer-text" id="userAnswerDisplay"></div>
-                </div>
-                
-                <div class="answer-section visible">
-                    <div class="answer-label">✓ Model Answer:</div>
-                    <div class="answer-text" id="answerText"></div>
-                </div>
-                
-                <!-- Self-Assessment -->
-                <div class="self-assessment">
-                    <div class="self-assessment-label">How did you do?</div>
-                    <div class="self-assessment-buttons">
-                        <button class="self-btn self-btn-correct" onclick="recordSelfAssessment(true)">
-                            ✓ Mostly Correct
-                        </button>
-                        <button class="self-btn self-btn-practice" onclick="recordSelfAssessment(false)">
-                            📚 Need More Practice
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="action-buttons">
-                <button class="btn-primary" id="revealBtn" onclick="revealAnswer()">
-                    Reveal Model Answer
-                </button>
-                <button class="btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display: none;">
-                    Next Question →
-                </button>
-            </div>
+            <div class="loading">Loading questions...</div>
         </div>
         
         <!-- Navigation Buttons -->
-        <div class="nav-buttons">
+        <div class="nav-buttons" id="navButtons" style="display: none;">
             <button class="nav-btn" id="prevBtn" onclick="previousQuestion()">
                 ← Previous
             </button>
             <button class="nav-btn" id="randomBtn" onclick="randomQuestion()">
                 🎲 Random Question
+            </button>
+            <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">
+                Next →
             </button>
         </div>
     </div>
@@ -514,7 +503,9 @@
         };
         let currentType = 'tell_me';
         let currentIndex = 0;
-        let completedQuestions = new Set();
+        let currentQuestion = null;
+        let shuffledAnswers = [];
+        let hasAnswered = false;
         
         // Load questions on page load
         document.addEventListener('DOMContentLoaded', async () => {
@@ -527,21 +518,32 @@
             try {
                 // Load Tell Me questions
                 const tellMeResponse = await fetch(`${API_URL}/smtm/questions?type=tell_me`);
+                if (!tellMeResponse.ok) throw new Error('Failed to load Tell Me questions');
                 allQuestions.tell_me = await tellMeResponse.json();
                 
                 // Load Show Me questions
                 const showMeResponse = await fetch(`${API_URL}/smtm/questions?type=show_me`);
+                if (!showMeResponse.ok) throw new Error('Failed to load Show Me questions');
                 allQuestions.show_me = await showMeResponse.json();
+                
+                console.log(`Loaded ${allQuestions.tell_me.length} Tell Me and ${allQuestions.show_me.length} Show Me questions`);
                 
             } catch (error) {
                 console.error('Error loading questions:', error);
-                document.getElementById('questionText').textContent = 'Error loading questions. Please make sure the backend is running.';
+                document.getElementById('questionCard').innerHTML = `
+                    <div class="error-message">
+                        <strong>Error loading questions</strong><br>
+                        Please make sure the backend is running on port 3000 and the database has been updated with the new schema.
+                    </div>
+                `;
             }
         }
         
         async function loadProgress() {
             try {
                 const response = await fetch(`${API_URL}/smtm/progress/${USER_ID}`);
+                if (!response.ok) return;
+                
                 const progress = await response.json();
                 
                 // Update Tell Me progress
@@ -579,70 +581,134 @@
         function displayQuestion() {
             const questions = allQuestions[currentType];
             if (!questions || questions.length === 0) {
-                document.getElementById('questionText').textContent = 'No questions available';
+                document.getElementById('questionCard').innerHTML = `
+                    <div class="loading">No questions available for this type.</div>
+                `;
                 return;
             }
             
-            const question = questions[currentIndex];
+            currentQuestion = questions[currentIndex];
+            hasAnswered = false;
             
-            // Update question number and type
-            document.getElementById('questionNumber').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
-            document.getElementById('questionType').textContent = currentType === 'tell_me' ? 'TELL ME' : 'SHOW ME';
+            // Shuffle answers (correct + 2 incorrect)
+            shuffledAnswers = [
+                { text: currentQuestion.answer_text, correct: true },
+                { text: currentQuestion.incorrect_answer_1, correct: false },
+                { text: currentQuestion.incorrect_answer_2, correct: false }
+            ].sort(() => Math.random() - 0.5);
             
-            // Update question text
-            document.getElementById('questionText').textContent = question.question_text;
+            // Build question card HTML
+            document.getElementById('questionCard').innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">Question ${currentIndex + 1} of ${questions.length}</div>
+                    <div class="question-type">${currentType === 'tell_me' ? 'TELL ME' : 'SHOW ME'}</div>
+                </div>
+                
+                <div class="question-text">${currentQuestion.question_text}</div>
+                
+                <form id="answerForm">
+                    <div class="answer-options" id="answerOptions">
+                        ${shuffledAnswers.map((answer, index) => `
+                            <div class="answer-option" id="option${index}" onclick="selectOption(${index})">
+                                <input type="radio" name="answer" value="${index}" id="answer${index}">
+                                <label for="answer${index}">${answer.text}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                        Check Answer
+                    </button>
+                </form>
+                
+                <div class="feedback-box" id="feedbackBox">
+                    <div class="feedback-header" id="feedbackHeader"></div>
+                    <div class="feedback-text" id="feedbackText"></div>
+                    <div class="action-buttons">
+                        <button class="btn-primary" onclick="nextQuestion()">
+                            Next Question →
+                        </button>
+                    </div>
+                </div>
+            `;
             
-            // Store model answer
-            document.getElementById('answerText').textContent = question.answer_text;
+            // Attach form submit handler
+            document.getElementById('answerForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                checkAnswer();
+            });
             
-            // Reset user input
-            document.getElementById('userAnswerInput').value = '';
-            document.getElementById('userAnswerSection').style.display = 'block';
-            
-            // Hide comparison section
-            document.getElementById('comparisonSection').classList.remove('visible');
-            
-            // Reset buttons
-            document.getElementById('revealBtn').style.display = 'block';
-            document.getElementById('nextBtn').style.display = 'none';
-            
-            // Update navigation buttons
+            // Show navigation buttons
+            document.getElementById('navButtons').style.display = 'flex';
             document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === questions.length - 1;
         }
         
-        async function revealAnswer() {
-            const questions = allQuestions[currentType];
-            const question = questions[currentIndex];
+        function selectOption(index) {
+            if (hasAnswered) return;
             
-            // Get user's answer
-            const userAnswer = document.getElementById('userAnswerInput').value.trim();
+            // Check the radio button
+            document.getElementById(`answer${index}`).checked = true;
             
-            // Display user's answer (or note if empty)
-            document.getElementById('userAnswerDisplay').textContent = 
-                userAnswer || '(No answer provided)';
-            
-            // Hide input section, show comparison
-            document.getElementById('userAnswerSection').style.display = 'none';
-            document.getElementById('comparisonSection').classList.add('visible');
-            
-            // Hide reveal button
-            document.getElementById('revealBtn').style.display = 'none';
+            // Enable submit button
+            document.getElementById('submitBtn').disabled = false;
         }
         
-        async function recordSelfAssessment(isCorrect) {
-            const questions = allQuestions[currentType];
-            const question = questions[currentIndex];
-            const userAnswer = document.getElementById('userAnswerInput').value.trim();
+        async function checkAnswer() {
+            if (hasAnswered) return;
             
-            // Record attempt with self-assessment
+            const selectedRadio = document.querySelector('input[name="answer"]:checked');
+            if (!selectedRadio) return;
+            
+            const selectedIndex = parseInt(selectedRadio.value);
+            const isCorrect = shuffledAnswers[selectedIndex].correct;
+            
+            hasAnswered = true;
+            
+            // Disable all inputs
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                radio.disabled = true;
+            });
+            document.querySelectorAll('.answer-option').forEach(opt => {
+                opt.classList.add('disabled');
+                opt.onclick = null;
+            });
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Highlight correct/incorrect
+            shuffledAnswers.forEach((answer, index) => {
+                const option = document.getElementById(`option${index}`);
+                if (answer.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // Show feedback
+            const feedbackBox = document.getElementById('feedbackBox');
+            const feedbackHeader = document.getElementById('feedbackHeader');
+            const feedbackText = document.getElementById('feedbackText');
+            
+            feedbackBox.className = isCorrect ? 'feedback-box correct' : 'feedback-box incorrect';
+            feedbackHeader.className = isCorrect ? 'feedback-header correct' : 'feedback-header incorrect';
+            feedbackHeader.textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
+            feedbackText.textContent = isCorrect 
+                ? 'Well done! You selected the correct answer.'
+                : 'The correct answer is now highlighted in green. Read through it to understand the proper procedure.';
+            
+            feedbackBox.style.display = 'block';
+            
+            // Record attempt
             try {
                 await fetch(`${API_URL}/smtm/submit`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        question_id: question.id,
-                        user_answer: userAnswer || '(no answer)',
-                        user_id: USER_ID
+                        question_id: currentQuestion.id,
+                        user_answer: shuffledAnswers[selectedIndex].text,
+                        user_id: USER_ID,
+                        is_correct: isCorrect
                     })
                 });
                 
@@ -650,23 +716,18 @@
                 await loadProgress();
                 
             } catch (error) {
-                console.error('Error recording assessment:', error);
+                console.error('Error recording attempt:', error);
             }
-            
-            // Show next button
-            document.getElementById('nextBtn').style.display = 'block';
         }
         
         function nextQuestion() {
             const questions = allQuestions[currentType];
             if (currentIndex < questions.length - 1) {
                 currentIndex++;
-                displayQuestion();
             } else {
-                // Loop back to first question
-                currentIndex = 0;
-                displayQuestion();
+                currentIndex = 0; // Loop back to first
             }
+            displayQuestion();
         }
         
         function previousQuestion() {
@@ -678,7 +739,8 @@
         
         function randomQuestion() {
             const questions = allQuestions[currentType];
-            currentIndex = Math.floor(Math.random() * questions.length);
+            const newIndex = Math.floor(Math.random() * questions.length);
+            currentIndex = newIndex;
             displayQuestion();
         }
     </script>
