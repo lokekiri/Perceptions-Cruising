@@ -1,5 +1,5 @@
 {
-  "name": "perceptions-cruising-backend",
+  "name": "perceptive-cruising-backend",
   "version": "1.0.0",
   "description": "Backend API for Perceptions Cruising - Diagnostic feedback system",
   "main": "server.js",
