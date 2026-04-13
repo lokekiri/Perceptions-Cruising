@@ -466,6 +466,21 @@
                 
                 <div class="question-text" id="tellMeQuestion">Loading question...</div>
                 
+                <!-- Bonnet diagram for engine check questions -->
+                <div id="bonnetDiagram" class="diagram-container" style="display: none;">
+                    <div class="diagram-instruction" style="background: #E8F6F3; border-color: #16A085; color: #117A65;">
+                        📸 Reference image: Use this to identify the components mentioned in your answer
+                    </div>
+                    <img src="bonnet.jpg" alt="Car Engine Bay" style="width: 100%; max-width: 700px; border-radius: 8px; border: 2px solid #BDC3C7;">
+                    <div style="margin-top: 15px; padding: 15px; background: #F8F9FA; border-radius: 8px; text-align: left;">
+                        <strong>Key Components:</strong><br>
+                        🟡 <strong>Oil Dipstick</strong> - Yellow cap (top center)<br>
+                        🟡 <strong>Coolant Expansion Tank</strong> - Yellow cap with warning symbol (bottom center)<br>
+                        ⚪ <strong>Brake Fluid Reservoir</strong> - White/translucent cap (upper left)<br>
+                        🔋 <strong>Battery</strong> - AGM battery (right side)
+                    </div>
+                </div>
+                
                 <textarea 
                     class="answer-input" 
                     id="tellMeAnswer" 
@@ -673,6 +688,16 @@
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('tellMeSection').classList.remove('hidden');
             document.getElementById('tellMeQuestion').textContent = selectedTellMe.question_text;
+            
+            // Show bonnet diagram if question involves opening bonnet
+            const questionLower = selectedTellMe.question_text.toLowerCase();
+            const isBonnetQuestion = questionLower.includes('open the bonnet') || 
+                                    questionLower.includes('engine') ||
+                                    questionLower.includes('oil') ||
+                                    questionLower.includes('coolant') ||
+                                    questionLower.includes('brake fluid');
+            
+            document.getElementById('bonnetDiagram').style.display = isBonnetQuestion ? 'block' : 'none';
         }
         
         function submitTellMe() {
