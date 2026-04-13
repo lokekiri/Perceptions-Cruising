@@ -1,7 +1,7 @@
 {
   "name": "perceptive-cruising-backend",
   "version": "1.0.0",
-  "description": "Backend API for Perceptions Cruising - Diagnostic feedback system",
+  "description": "Backend API for Perceptive Cruising - Diagnostic feedback system",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -18,13 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lokekiri/Perceptions-Cruising.git"
+    "url": "git+https://github.com/lokekiri/Perceptive-Cruising.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lokekiri/Perceptions-Cruising/issues"
+    "url": "https://github.com/lokekiri/Perceptive-Cruising/issues"
   },
-  "homepage": "https://github.com/lokekiri/Perceptions-Cruising#readme"
+  "homepage": "https://github.com/lokekiri/Perceptive-Cruising#readme"
 }
