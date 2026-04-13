@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mode - Show Me, Tell Me - Perceptive Cruising</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #1A1A1A;
+            line-height: 1.6;
+        }
+        
+        nav {
+            background: #2C3E50;
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav .brand {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        
+        nav .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            transition: opacity 0.3s;
+        }
+        
+        nav .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: #2C3E50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #566573;
+            font-size: 1.2em;
+        }
+        
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 20px;
+            background: white;
+            border: 3px solid #BDC3C7;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .mode-btn:hover {
+            border-color: #16A085;
+            background: #E8F6F3;
+        }
+        
+        .mode-btn.active {
+            border-color: #16A085;
+            background: #16A085;
+            color: white;
+        }
+        
+        .mode-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .mode-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .mode-description {
+            font-size: 0.95em;
+            opacity: 0.8;
+        }
+        
+        .test-info {
+            background: #E8F6F3;
+            border: 2px solid #16A085;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .test-info h3 {
+            color: #16A085;
+            margin-bottom: 10px;
+        }
+        
+        .test-info ul {
+            margin-left: 20px;
+        }
+        
+        .test-info li {
+            margin: 5px 0;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #16A085;
+        }
+        
+        .question-number {
+            font-size: 1.2em;
+            color: #566573;
+            font-weight: 600;
+        }
+        
+        .question-type {
+            background: #16A085;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .question-text {
+            font-size: 1.3em;
+            color: #2C3E50;
+            margin-bottom: 25px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            margin-bottom: 20px;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #16A085;
+        }
+        
+        .diagram-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .diagram-instruction {
+            background: #FFF3CD;
+            border: 2px solid #FFC107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+            font-weight: 500;
+        }
+        
+        #carDiagram {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            cursor: pointer;
+            border: 2px solid #BDC3C7;
+            border-radius: 8px;
+            background: #F8F9FA;
+        }
+        
+        .control-area {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .control-area:hover {
+            opacity: 0.7;
+            filter: brightness(1.2);
+        }
+        
+        .control-area.selected {
+            stroke: #16A085;
+            stroke-width: 4;
+            filter: brightness(1.3);
+        }
+        
+        .control-area.correct {
+            stroke: #16A085;
+            stroke-width: 5;
+            fill: #D5F4E6;
+        }
+        
+        .control-area.incorrect {
+            stroke: #E74C3C;
+            stroke-width: 5;
+            fill: #FADBD8;
+        }
+        
+        .control-label {
+            font-size: 14px;
+            font-weight: 600;
+            fill: #2C3E50;
+            pointer-events: none;
+        }
+        
+        .submit-btn {
+            background: #16A085;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            background: #117A65;
+        }
+        
+        .submit-btn:disabled {
+            background: #BDC3C7;
+            cursor: not-allowed;
+        }
+        
+        .results-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .results-score {
+            font-size: 4em;
+            font-weight: bold;
+            color: #16A085;
+            margin: 20px 0;
+        }
+        
+        .results-score.fail {
+            color: #E74C3C;
+        }
+        
+        .results-message {
+            font-size: 1.5em;
+            color: #2C3E50;
+            margin-bottom: 30px;
+        }
+        
+        .results-details {
+            text-align: left;
+            margin: 30px 0;
+        }
+        
+        .result-item {
+            background: #F8F9FA;
+            border-left: 5px solid;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .result-item.correct {
+            border-color: #16A085;
+            background: #D5F4E6;
+        }
+        
+        .result-item.incorrect {
+            border-color: #E74C3C;
+            background: #FADBD8;
+        }
+        
+        .result-item h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .result-item .icon {
+            font-size: 1.3em;
+        }
+        
+        .result-item .question {
+            font-weight: 500;
+            margin: 10px 0;
+            color: #2C3E50;
+        }
+        
+        .result-item .your-answer {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .result-item .correct-answer {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .retry-btn {
+            background: #16A085;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 10px;
+        }
+        
+        .retry-btn:hover {
+            background: #117A65;
+        }
+        
+        .practice-btn {
+            background: white;
+            color: #16A085;
+            border: 2px solid #16A085;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        .practice-btn:hover {
+            background: #E8F6F3;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #566573;
+            font-size: 1.2em;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="brand">Perceptive Cruising</a>
+            <div class="nav-links">
+                <a href="scenarios.html">Driving Situations</a>
+                <a href="smtm.html">Show Me Tell Me</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header>
+            <h1>Show Me, Tell Me - Test Mode</h1>
+            <p class="subtitle">Simulate the real driving test</p>
+        </header>
+        
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <a href="smtm.html" class="mode-btn">
+                <div class="mode-icon">📚</div>
+                <div class="mode-title">Practice Mode</div>
+                <div class="mode-description">Learn all 21 questions with multiple choice</div>
+            </a>
+            <a href="smtm-test.html" class="mode-btn active">
+                <div class="mode-icon">✅</div>
+                <div class="mode-title">Test Mode</div>
+                <div class="mode-description">Simulate real test: 1 Tell Me + 1 Show Me</div>
+            </a>
+        </div>
+        
+        <!-- Test Info -->
+        <div class="test-info">
+            <h3>📋 How the Real Test Works</h3>
+            <ul>
+                <li><strong>Tell Me Question:</strong> You'll be asked 1 random "Tell Me" question at the start of the test. You must answer from memory.</li>
+                <li><strong>Show Me Question:</strong> During driving, the examiner will ask 1 random "Show Me" question. You demonstrate the control.</li>
+                <li><strong>Scoring:</strong> Each correct answer is 1 point. You can get 0, 1, or 2 points total.</li>
+                <li><strong>Pass Requirement:</strong> You won't fail the test for getting these wrong, but they count as minor faults.</li>
+            </ul>
+        </div>
+        
+        <!-- Start Screen -->
+        <div id="startScreen">
+            <div class="question-card" style="text-align: center;">
+                <h2 style="margin-bottom: 20px;">Ready to Start Your Test?</h2>
+                <p style="margin-bottom: 30px; color: #566573; font-size: 1.1em;">
+                    You'll be asked 1 Tell Me question and 1 Show Me question, randomly selected from the DVSA question bank.
+                </p>
+                <button class="submit-btn" onclick="startTest()">Begin Test</button>
+            </div>
+        </div>
+        
+        <!-- Tell Me Question -->
+        <div id="tellMeSection" class="hidden">
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">Question 1 of 2</div>
+                    <div class="question-type">TELL ME</div>
+                </div>
+                
+                <div class="question-text" id="tellMeQuestion">Loading question...</div>
+                
+                <textarea 
+                    class="answer-input" 
+                    id="tellMeAnswer" 
+                    placeholder="Type your answer here..."
+                ></textarea>
+                
+                <button class="submit-btn" onclick="submitTellMe()">
+                    Submit Answer
+                </button>
+            </div>
+        </div>
+        
+        <!-- Show Me Question -->
+        <div id="showMeSection" class="hidden">
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">Question 2 of 2</div>
+                    <div class="question-type">SHOW ME</div>
+                </div>
+                
+                <div class="question-text" id="showMeQuestion">Loading question...</div>
+                
+                <div class="diagram-instruction">
+                    👆 Click on the car control that answers the question above
+                </div>
+                
+                <div class="diagram-container">
+                    <svg id="carDiagram" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Dashboard background -->
+                        <rect x="0" y="0" width="800" height="600" fill="#34495E"/>
+                        
+                        <!-- Steering wheel -->
+                        <circle cx="400" cy="400" r="100" fill="#2C3E50" stroke="#1A252F" stroke-width="3"/>
+                        <circle cx="400" cy="400" r="80" fill="none" stroke="#1A252F" stroke-width="8"/>
+                        
+                        <!-- Horn (center of steering wheel) -->
+                        <circle 
+                            cx="400" cy="400" r="40" 
+                            fill="#E74C3C" 
+                            class="control-area" 
+                            data-control="horn"
+                            onclick="selectControl('horn')"
+                        />
+                        <text x="400" y="405" text-anchor="middle" class="control-label" fill="white">HORN</text>
+                        
+                        <!-- Left stalk (wipers/washers) -->
+                        <rect 
+                            x="250" y="380" width="120" height="40" 
+                            rx="8" 
+                            fill="#7F8C8D" 
+                            class="control-area" 
+                            data-control="wipers"
+                            onclick="selectControl('wipers')"
+                        />
+                        <text x="310" y="405" text-anchor="middle" class="control-label">WIPERS</text>
+                        
+                        <!-- Right stalk (indicators) -->
+                        <rect 
+                            x="430" y="380" width="120" height="40" 
+                            rx="8" 
+                            fill="#7F8C8D" 
+                            class="control-area" 
+                            data-control="indicators"
+                            onclick="selectControl('indicators')"
+                        />
+                        <text x="490" y="405" text-anchor="middle" class="control-label">INDICATORS</text>
+                        
+                        <!-- Headlight switch (left side) -->
+                        <circle 
+                            cx="150" cy="300" r="35" 
+                            fill="#F39C12" 
+                            class="control-area" 
+                            data-control="headlights"
+                            onclick="selectControl('headlights')"
+                        />
+                        <text x="150" y="305" text-anchor="middle" class="control-label" font-size="12">LIGHTS</text>
+                        
+                        <!-- Rear demister button -->
+                        <rect 
+                            x="300" y="200" width="80" height="50" 
+                            rx="8" 
+                            fill="#3498DB" 
+                            class="control-area" 
+                            data-control="rear_demister"
+                            onclick="selectControl('rear_demister')"
+                        />
+                        <text x="340" y="220" text-anchor="middle" class="control-label" font-size="11">REAR</text>
+                        <text x="340" y="235" text-anchor="middle" class="control-label" font-size="11">DEMIST</text>
+                        
+                        <!-- Front demister button -->
+                        <rect 
+                            x="420" y="200" width="80" height="50" 
+                            rx="8" 
+                            fill="#3498DB" 
+                            class="control-area" 
+                            data-control="front_demister"
+                            onclick="selectControl('front_demister')"
+                        />
+                        <text x="460" y="220" text-anchor="middle" class="control-label" font-size="11">FRONT</text>
+                        <text x="460" y="235" text-anchor="middle" class="control-label" font-size="11">DEMIST</text>
+                        
+                        <!-- Window controls (driver door) -->
+                        <rect 
+                            x="100" y="450" width="100" height="60" 
+                            rx="8" 
+                            fill="#95A5A6" 
+                            class="control-area" 
+                            data-control="windows"
+                            onclick="selectControl('windows')"
+                        />
+                        <text x="150" y="475" text-anchor="middle" class="control-label" font-size="11">WINDOW</text>
+                        <text x="150" y="490" text-anchor="middle" class="control-label" font-size="11">CONTROLS</text>
+                        
+                        <!-- Dashboard labels -->
+                        <text x="400" y="50" text-anchor="middle" fill="#ECF0F1" font-size="20" font-weight="bold">
+                            CAR INTERIOR - Click the Control
+                        </text>
+                    </svg>
+                </div>
+                
+                <button class="submit-btn" id="showMeSubmitBtn" onclick="submitShowMe()" disabled>
+                    Submit Answer
+                </button>
+            </div>
+        </div>
+        
+        <!-- Results Screen -->
+        <div id="resultsSection" class="hidden">
+            <div class="results-card">
+                <h2>Test Complete!</h2>
+                <div class="results-score" id="resultsScore">2/2</div>
+                <div class="results-message" id="resultsMessage">Excellent work!</div>
+                
+                <div class="results-details" id="resultsDetails">
+                    <!-- Results will be populated here -->
+                </div>
+                
+                <div>
+                    <button class="retry-btn" onclick="location.reload()">
+                        🔄 Take Another Test
+                    </button>
+                    <button class="practice-btn" onclick="location.href='smtm.html'">
+                        📚 Practice Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const USER_ID = 1;
+        
+        let allQuestions = {
+            tell_me: [],
+            show_me: []
+        };
+        
+        let selectedTellMe = null;
+        let selectedShowMe = null;
+        let userAnswers = {
+            tellMe: null,
+            showMe: null
+        };
+        let selectedControl = null;
+        
+        // Control mappings for Show Me questions
+        const controlMappings = {
+            'wash and clean the rear windscreen': 'wipers',
+            'wash and clean the front windscreen': 'wipers',
+            'switch on your dipped headlights': 'headlights',
+            'set the rear demister': 'rear_demister',
+            'operate the horn': 'horn',
+            'demist the front windscreen': 'front_demister',
+            'open and close the side window': 'windows'
+        };
+        
+        // Load questions on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadAllQuestions();
+        });
+        
+        async function loadAllQuestions() {
+            try {
+                const tellMeResponse = await fetch(`${API_URL}/smtm/questions?type=tell_me`);
+                allQuestions.tell_me = await tellMeResponse.json();
+                
+                const showMeResponse = await fetch(`${API_URL}/smtm/questions?type=show_me`);
+                allQuestions.show_me = await showMeResponse.json();
+                
+                console.log(`Loaded ${allQuestions.tell_me.length} Tell Me and ${allQuestions.show_me.length} Show Me questions`);
+                
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                alert('Error loading questions. Please make sure the backend is running.');
+            }
+        }
+        
+        function startTest() {
+            // Select random questions
+            selectedTellMe = allQuestions.tell_me[Math.floor(Math.random() * allQuestions.tell_me.length)];
+            selectedShowMe = allQuestions.show_me[Math.floor(Math.random() * allQuestions.show_me.length)];
+            
+            // Show Tell Me question
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('tellMeSection').classList.remove('hidden');
+            document.getElementById('tellMeQuestion').textContent = selectedTellMe.question_text;
+        }
+        
+        function submitTellMe() {
+            const answer = document.getElementById('tellMeAnswer').value.trim();
+            
+            if (!answer) {
+                alert('Please type your answer before submitting.');
+                return;
+            }
+            
+            userAnswers.tellMe = answer;
+            
+            // Move to Show Me question
+            document.getElementById('tellMeSection').classList.add('hidden');
+            document.getElementById('showMeSection').classList.remove('hidden');
+            document.getElementById('showMeQuestion').textContent = selectedShowMe.question_text;
+        }
+        
+        function selectControl(control) {
+            // Remove previous selection
+            document.querySelectorAll('.control-area').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Highlight selected control
+            const element = document.querySelector(`[data-control="${control}"]`);
+            if (element) {
+                element.classList.add('selected');
+                selectedControl = control;
+                document.getElementById('showMeSubmitBtn').disabled = false;
+            }
+        }
+        
+        function submitShowMe() {
+            if (!selectedControl) {
+                alert('Please click on a control before submitting.');
+                return;
+            }
+            
+            userAnswers.showMe = selectedControl;
+            
+            // Show results
+            showResults();
+        }
+        
+        function showResults() {
+            // Check answers
+            const tellMeCorrect = checkTellMeAnswer(userAnswers.tellMe, selectedTellMe.answer_text);
+            const showMeCorrect = checkShowMeAnswer(userAnswers.showMe, selectedShowMe.question_text);
+            
+            const score = (tellMeCorrect ? 1 : 0) + (showMeCorrect ? 1 : 0);
+            
+            // Update score display
+            document.getElementById('resultsScore').textContent = `${score}/2`;
+            document.getElementById('resultsScore').classList.toggle('fail', score === 0);
+            
+            // Update message
+            let message = '';
+            if (score === 2) {
+                message = 'Perfect! You got both questions correct! 🎉';
+            } else if (score === 1) {
+                message = 'Good effort! You got 1 out of 2 correct.';
+            } else {
+                message = 'Keep practising! Review the correct answers below.';
+            }
+            document.getElementById('resultsMessage').textContent = message;
+            
+            // Show detailed results
+            const detailsHTML = `
+                <div class="result-item ${tellMeCorrect ? 'correct' : 'incorrect'}">
+                    <h4>
+                        <span class="icon">${tellMeCorrect ? '✓' : '✗'}</span>
+                        Tell Me Question ${tellMeCorrect ? '(Correct)' : '(Incorrect)'}
+                    </h4>
+                    <div class="question">${selectedTellMe.question_text}</div>
+                    <div class="your-answer">
+                        <strong>Your answer:</strong><br>
+                        ${userAnswers.tellMe}
+                    </div>
+                    <div class="correct-answer">
+                        <strong>Correct answer:</strong><br>
+                        ${selectedTellMe.answer_text}
+                    </div>
+                </div>
+                
+                <div class="result-item ${showMeCorrect ? 'correct' : 'incorrect'}">
+                    <h4>
+                        <span class="icon">${showMeCorrect ? '✓' : '✗'}</span>
+                        Show Me Question ${showMeCorrect ? '(Correct)' : '(Incorrect)'}
+                    </h4>
+                    <div class="question">${selectedShowMe.question_text}</div>
+                    <div class="your-answer">
+                        <strong>You selected:</strong> ${formatControlName(userAnswers.showMe)}
+                    </div>
+                    <div class="correct-answer">
+                        <strong>Correct control:</strong> ${formatControlName(getCorrectControl(selectedShowMe.question_text))}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('resultsDetails').innerHTML = detailsHTML;
+            
+            // Show results section
+            document.getElementById('showMeSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+            
+            // Highlight correct/incorrect on diagram
+            highlightDiagramResult(userAnswers.showMe, getCorrectControl(selectedShowMe.question_text));
+        }
+        
+        function checkTellMeAnswer(userAnswer, correctAnswer) {
+            // Simple keyword matching - check if user answer contains key concepts
+            const userLower = userAnswer.toLowerCase();
+            const correctLower = correctAnswer.toLowerCase();
+            
+            // Extract key words from correct answer (words longer than 4 characters)
+            const keywords = correctLower.split(/\s+/)
+                .filter(word => word.length > 4)
+                .filter(word => !['should', 'would', 'there', 'check', 'press'].includes(word));
+            
+            // Check if user answer contains at least 40% of keywords
+            const matchedKeywords = keywords.filter(keyword => userLower.includes(keyword));
+            const matchPercentage = matchedKeywords.length / keywords.length;
+            
+            return matchPercentage >= 0.4;
+        }
+        
+        function checkShowMeAnswer(selectedControl, questionText) {
+            const correctControl = getCorrectControl(questionText);
+            return selectedControl === correctControl;
+        }
+        
+        function getCorrectControl(questionText) {
+            const questionLower = questionText.toLowerCase();
+            
+            for (const [key, control] of Object.entries(controlMappings)) {
+                if (questionLower.includes(key)) {
+                    return control;
+                }
+            }
+            
+            return null;
+        }
+        
+        function formatControlName(control) {
+            const names = {
+                'horn': 'Horn (center of steering wheel)',
+                'wipers': 'Wiper/Washer Control (left stalk)',
+                'indicators': 'Indicator Control (right stalk)',
+                'headlights': 'Headlight Switch',
+                'rear_demister': 'Rear Demister Button',
+                'front_demister': 'Front Demister Button',
+                'windows': 'Window Controls'
+            };
+            
+            return names[control] || control;
+        }
+        
+        function highlightDiagramResult(selected, correct) {
+            document.querySelectorAll('.control-area').forEach(el => {
+                el.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Highlight correct answer
+            const correctElement = document.querySelector(`[data-control="${correct}"]`);
+            if (correctElement) {
+                correctElement.classList.add('correct');
+            }
+            
+            // Highlight wrong answer if different
+            if (selected !== correct) {
+                const selectedElement = document.querySelector(`[data-control="${selected}"]`);
+                if (selectedElement) {
+                    selectedElement.classList.add('incorrect');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
