@@ -1,5 +1,5 @@
 -- Perceptive Cruising Database Schema
--- Complete schema with driving scenarios and smtm questions
+-- Complete schema with driving scenarios and SMTM questions
 
 -- ============================================
 -- USERS & AUTHENTICATION
@@ -59,6 +59,8 @@ CREATE TABLE smtm_questions (
     question_type ENUM('tell_me', 'show_me') NOT NULL,
     question_text TEXT NOT NULL,
     answer_text TEXT NOT NULL,
+    incorrect_answer_1 TEXT,
+    incorrect_answer_2 TEXT,
     image_filename VARCHAR(255),
     category VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -231,90 +233,165 @@ INSERT INTO feedback (scenario_id, answer_choice, is_correct, misconception, fee
  'Primary mirror check comes before signalling - not during the turn');
 
 -- ============================================
--- SEED DATA: TELL ME QUESTIONS
+-- SEED DATA: SMTM QUESTIONS (21 total)
 -- ============================================
 
-INSERT INTO smtm_questions (question_type, question_text, answer_text, category) VALUES
-('tell_me', 
- 'Tell me how you''d check the brakes are working before starting a journey.', 
- 'Brakes should not feel spongy or slack. Test them as you set off — the car should not pull to one side.', 
+-- TELL ME QUESTIONS (14 total)
+INSERT INTO smtm_questions (question_type, question_text, answer_text, incorrect_answer_1, incorrect_answer_2, category) VALUES
+('tell_me',
+ 'Open the bonnet and tell me how you''d check that the engine has sufficient oil.',
+ 'Remove the dipstick, wipe it clean, put it back in, remove it again, and make sure the oil level is between the minimum and maximum markers.',
+ 'Check the oil by starting the engine and waiting for the temperature gauge to rise.',
+ 'Open the coolant cap and look inside to see whether the oil is high enough.',
+ 'engine_checks'),
+
+('tell_me',
+ 'Open the bonnet and tell me how you''d check that the engine has sufficient engine coolant.',
+ 'Check the level in the expansion tank and make sure it is between the minimum and maximum markings. Do not open it when it is hot.',
+ 'Remove the radiator cap while the engine is warm and top it up to the brim.',
+ 'Check coolant by pressing the brake pedal several times and seeing if it feels firm.',
+ 'engine_checks'),
+
+('tell_me',
+ 'Open the bonnet and tell me how you''d check that you have a safe level of hydraulic brake fluid.',
+ 'Check the brake fluid reservoir and make sure the level is between the minimum and maximum markings.',
+ 'Check the brake fluid by pumping the handbrake until it feels tight.',
+ 'Look underneath the car for water and, if there is none, the brake fluid is fine.',
+ 'engine_checks'),
+
+('tell_me',
+ 'Tell me how you''d check that the brakes are working before starting a journey.',
+ 'Move forward slowly, press the foot brake, and check that it does not feel spongy or slack and that the car does not pull to one side.',
+ 'Rev the engine while parked and listen for any brake noise.',
+ 'Turn the steering wheel fully left and right to make sure the brakes are working.',
  'safety_checks'),
 
-('tell_me', 
- 'Tell me where you''d find information about the recommended tyre pressures for this car.', 
- 'In the manufacturer''s manual. There''s usually a sticker on the door sill or inside the fuel cap.', 
+('tell_me',
+ 'Tell me where you''d find the information for the recommended tyre pressures for this car and how tyre pressures should be checked.',
+ 'Use the car manual or the sticker on a door pillar, check all tyres including the spare when they are cold with a pressure gauge, and refit the valve caps afterwards.',
+ 'Use whatever pressure feels right after a short drive, because warm tyres are more accurate.',
+ 'Only check the two front tyres and ignore the spare because it is not in regular use.',
  'tyres'),
 
-('tell_me', 
- 'Tell me how you''d check the tyres are safe and legal.', 
- 'Check they''re free of cuts and bulges. The tread depth must be at least 1.6mm across the central three-quarters, around the whole circumference. Check pressures with a gauge.', 
- 'tyres'),
-
-('tell_me', 
- 'Tell me how you''d check the headlights and tail lights are working.', 
- 'Turn on the ignition, switch on the headlights, and walk around the car to check. You could also use reflections in a window or garage door.', 
- 'lights'),
-
-('tell_me', 
- 'Tell me how you''d know if there was a problem with the anti-lock braking system (ABS).', 
- 'The ABS warning light on the dashboard should come on when you start the engine and then go off. If it stays on, there''s a fault.', 
+('tell_me',
+ 'Tell me how you make sure your head restraint is correctly adjusted so it provides the best protection in the event of a crash.',
+ 'Adjust it so the rigid part is at least as high as your eyes or the top of your ears and as close to the back of your head as is comfortable.',
+ 'Set it as low as possible so it does not block your rear view.',
+ 'Tilt it backwards so there is a large gap between your head and the restraint.',
  'safety_checks'),
 
-('tell_me', 
- 'Tell me how you''d check the direction indicators are working.', 
- 'Turn on the ignition, apply the indicators (left and right), and walk around to check. Use the hazard warning lights to check all at once.', 
+('tell_me',
+ 'Tell me how you''d check the tyres to ensure that they have sufficient tread depth and that their general condition is safe to use on the road.',
+ 'Use a tread depth gauge and make sure the tread is at least 1.6mm across the central three quarters of the tyre all the way round, and check there are no cuts or bulges.',
+ 'Check only one tyre, because if one has good tread the others usually do too.',
+ 'As long as the sidewalls are shiny, the tyres are safe even if the tread is low.',
+ 'tyres'),
+
+('tell_me',
+ 'Tell me how you''d check that the headlights and tail lights are working. You don''t need to exit the vehicle.',
+ 'Turn the ignition on, switch on the dipped headlights, and then walk around the car to check the headlights and tail lights are working.',
+ 'Flash the main beam three times and assume the tail lights are working as well.',
+ 'Check the lights by sounding the horn and watching the dashboard.',
  'lights'),
 
-('tell_me', 
- 'Tell me how you''d check the brake lights are working.', 
- 'Turn on the ignition, press the brake pedal, and use a reflection (window, wall, or ask someone to look).', 
+('tell_me',
+ 'Tell me how you''d know if there was a problem with your anti-lock braking system (ABS).',
+ 'The ABS warning light would stay on after starting the car.',
+ 'The fuel gauge would drop suddenly when ABS is faulty.',
+ 'The horn would sound automatically if ABS stopped working.',
+ 'safety_checks'),
+
+('tell_me',
+ 'Tell me how you''d check the direction indicators are working. You don''t need to exit the vehicle.',
+ 'Press the hazard warning light button and then walk around the car to check that all six indicators are working.',
+ 'Turn the steering wheel left and right to see whether the indicators come on by themselves.',
+ 'Switch on the interior light and check whether the dashboard becomes brighter.',
+ 'lights'),
+
+('tell_me',
+ 'Tell me how you''d check the brake lights are working on this car.',
+ 'Turn the ignition on, press the foot brake, and check reflections in windows or a garage door, or ask someone to help you check the brake lights.',
+ 'Pull the handbrake up and see whether the brake lights come on.',
+ 'Press the clutch pedal and listen for a click from the rear of the car.',
+ 'lights'),
+
+('tell_me',
+ 'Tell me how you''d check the power-assisted steering is working before starting a journey.',
+ 'Apply light pressure to the steering as you start the engine; there should be slight movement as the power steering begins to work, and once moving the steering should feel light rather than heavy.',
+ 'If the steering wheel is completely rigid before starting, that proves the system is working properly.',
+ 'Check power steering by pumping the accelerator while the car is parked.',
+ 'safety_checks'),
+
+('tell_me',
+ 'Tell me how you''d switch on the rear fog light(s) and explain when you''d use it/them. You don''t need to exit the vehicle.',
+ 'Turn on the ignition, switch on the dipped headlights, then press the rear fog light button. Use them when you cannot see further than 100 metres, and check the dashboard warning light to know they are on.',
+ 'Use rear fog lights whenever it is raining and switch them on before the dipped headlights.',
+ 'Use them only in bright sunshine so other drivers can see you more clearly.',
+ 'lights'),
+
+('tell_me',
+ 'Tell me how you switch your headlight from dipped to main beam and explain how you''d know the main beam is on.',
+ 'Turn on the ignition, switch on the dipped headlights, then push the left-hand stalk towards the dashboard. The blue dashboard light shows that main beam is on.',
+ 'Turn the wiper stalk upwards until a green light appears on the dashboard.',
+ 'Press the horn twice and the headlights automatically switch to main beam.',
  'lights');
 
--- ============================================
--- SEED DATA: SHOW ME QUESTIONS
--- ============================================
-
-INSERT INTO smtm_questions (question_type, question_text, answer_text, image_filename, category) VALUES
-('show_me', 
- 'Show me how you''d wash and clean the front windscreen.', 
- 'Operate the windscreen washers and wipers.', 
- 'windscreen_washer.jpg', 
+-- SHOW ME QUESTIONS (7 total)
+INSERT INTO smtm_questions (question_type, question_text, answer_text, incorrect_answer_1, incorrect_answer_2, image_filename, category) VALUES
+('show_me',
+ 'When it''s safe to do so, can you show me how you wash and clean the rear windscreen?',
+ 'Use the right-hand stalk, push it towards the dashboard and hold it to wash the rear windscreen; the rear wiper works automatically.',
+ 'Pull the bonnet release and wait for the rear washer to start.',
+ 'Twist the headlight switch fully right to spray the rear windscreen.',
+ 'car_interior.png',
  'windscreen'),
 
-('show_me', 
- 'Show me how you''d wash and clean the rear windscreen.', 
- 'Operate the rear windscreen washer and wiper.', 
- 'rear_washer.jpg', 
+('show_me',
+ 'When it''s safe to do so, can you show me how you wash and clean the front windscreen?',
+ 'Pull the washer control towards the steering wheel to spray the front windscreen; in some cars the wipers come on automatically.',
+ 'Push the window switch down fully to activate the front washers.',
+ 'Press the rear demister button to clean the front windscreen.',
+ 'car_interior.png',
  'windscreen'),
 
-('show_me', 
- 'Show me how you''d switch on your dipped headlights.', 
- 'Operate the headlight switch to the dipped position.', 
- 'headlight_switch.jpg', 
+('show_me',
+ 'When it''s safe to do so, can you show me how you''d switch on your dipped headlights?',
+ 'Turn the headlight switch once to the left to switch on dipped headlights and check the dashboard symbol.',
+ 'Pull the left stalk back repeatedly until the horn sounds.',
+ 'Turn the hazard lights on because that also activates dipped headlights.',
+ 'car_interior.png',
  'lights'),
 
-('show_me', 
- 'Show me how you''d set the rear demister.', 
- 'Press the heated rear windscreen button.', 
- 'demister_button.jpg', 
+('show_me',
+ 'When it''s safe to do so, can you show me how you''d set the rear demister?',
+ 'Press the rear demister button to switch it on, and press it again to turn it off.',
+ 'Open the rear windows slightly so the glass clears by itself.',
+ 'Use the horn control to start the rear demister fan.',
+ 'car_interior.png',
  'windscreen'),
 
-('show_me', 
- 'Show me how you''d operate the horn.', 
- 'Press the horn (but only demonstrate when stationary to avoid startling other road users).', 
- 'horn.jpg', 
+('show_me',
+ 'When it''s safe to do so, can you show me how you''d operate the horn?',
+ 'Press the horn in the centre of the steering wheel when it is safe and there are no nearby road users.',
+ 'Pull the indicator stalk down and hold it for two seconds.',
+ 'Tap the brake pedal sharply to make the horn sound.',
+ 'car_interior.png',
  'controls'),
 
-('show_me', 
- 'Show me how you''d demist the front windscreen.', 
- 'Set the blowers to windscreen, turn up the heat, use the air con if available.', 
- 'demist_controls.jpg', 
+('show_me',
+ 'When it''s safe to do so, can you show me how you''d demist the front windscreen?',
+ 'Press the front demister control to direct the system to the windscreen, and press it again to turn it off when finished.',
+ 'Switch on the interior light and wait for the windscreen to clear.',
+ 'Open the glovebox and the front demister starts automatically.',
+ 'car_interior.png',
  'windscreen'),
 
-('show_me', 
- 'Show me how you''d open and close a side window.', 
- 'Operate the electric or manual window control.', 
- 'window_control.jpg', 
+('show_me',
+ 'When it''s safe to do so, can you show me how you''d open and close the side window?',
+ 'Use the controls on the driver''s door; press the driver''s window switch down to open the window and pull it up to close it.',
+ 'Turn the rear wiper control to open the driver''s window halfway.',
+ 'Use the mirror adjustment control to raise and lower the side window.',
+ 'car_interior.png',
  'controls');
 
 -- ============================================
